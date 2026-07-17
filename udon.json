@@ -1,0 +1,1324 @@
+{
+"dataset_metadata": {
+"title": "Top udon restaurants by area according to Tabelog Highest Rating",
+"source": "Tabelog",
+"ranking_method": "Highest Rating",
+"dish_category": "udon",
+"country": "Japan",
+"main_city": "Tokyo",
+"verification_date": "2026-07-17",
+"currency": "JPY",
+"language": "fr",
+"requested_results_per_area": 10,
+"total_areas": 15,
+"methodology_notes": [
+"Classement fondé exclusivement sur la note Tabelog.",
+"Les égalités sont départagées par le nombre d’avis, puis par la spécialisation dans les udon, puis par la proximité géographique.",
+"Les restaurants de soba et les établissements dont les udon sont secondaires sont exclus.",
+"Les informations indisponibles sont représentées par null."
+]
+},
+"areas": [
+{
+"area_id": "chiyoda_imperial_palace",
+"area_name_fr": "Chiyoda / Palais impérial",
+"area_name_ja": "千代田区・皇居周辺",
+"search_area_description": "Bord sud-est du Palais impérial, autour de Yurakucho, Hibiya et du Tokyo International Forum, dans un rayon piétonnier d’environ 800 mètres.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1301/A130102/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1301/A130102/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul établissement clairement spécialisé dans les udon a pu être vérifié dans ce périmètre restreint; les résultats plus éloignés et les restaurants généralistes ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "udon-ya-yaezakura__yurakucho",
+"name_ja": "うどん家 八重桜",
+"name_romaji": "Udon-ya Yaezakura",
+"tabelog_rating": 3.61,
+"tabelog_review_count": 692,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"mizusawa_udon",
+"zaru_udon",
+"cold_udon"
+],
+"specialty": "Mizusawa udon avec sauce au sésame",
+"description_fr": "Spécialiste du Mizusawa udon servi notamment froid, avec des nouilles élastiques et une sauce maison au sésame mise en avant sur Tabelog.",
+"address": "東京都千代田区有楽町2-10-1 東京交通会館 B1F",
+"nearest_station": "有楽町駅",
+"area_id": "chiyoda_imperial_palace",
+"city_or_ward": "Chiyoda",
+"tabelog_url": "[https://tabelog.com/tokyo/A1301/A130102/13260419/](https://tabelog.com/tokyo/A1301/A130102/13260419/)",
+"official_website_url": "[https://www.kotsukaikan.co.jp/food_shopping/28609/](https://www.kotsukaikan.co.jp/food_shopping/28609/)",
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": true
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "tsukiji",
+"area_name_fr": "Tsukiji",
+"area_name_ja": "築地",
+"search_area_description": "Tsukiji extérieur et ancien marché, entre les stations Tsukiji, Tsukijishijo et Higashi-ginza, sans extension vers Ginza ou Toyosu.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1313/A131301/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1313/A131301/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul spécialiste des udon répondant à tous les critères a pu être vérifié dans le noyau de Tsukiji; les établissements où les udon sont secondaires ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "utb__tsukiji",
+"name_ja": "UTB",
+"name_romaji": "UTB (Udon The Birth)",
+"tabelog_rating": 3.39,
+"tabelog_review_count": 185,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": null,
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"niku_udon",
+"hot_udon"
+],
+"specialty": "Udon mijoté à la viande et au tofu",
+"description_fr": "Maison spécialisée dans les udon mijotés, préparés avec un bouillon d’iriko de Tsukiji et proposés avec bœuf, tofu ou autres garnitures.",
+"address": "東京都中央区築地6-27-1",
+"nearest_station": "築地市場駅",
+"area_id": "tsukiji",
+"city_or_ward": "Chuo",
+"tabelog_url": "[https://tabelog.com/tokyo/A1313/A131301/13296007/](https://tabelog.com/tokyo/A1313/A131301/13296007/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "ueno",
+"area_name_fr": "Ueno",
+"area_name_ja": "上野",
+"search_area_description": "Gare d’Ueno et ses abords immédiats, y compris l’espace Ecute à l’intérieur de la gare, sans extension vers Asakusa ou Nippori.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1311/A131101/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1311/A131101/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul établissement spécialisé disposant d’une fiche actuelle entièrement vérifiable a été retenu dans le périmètre immédiat de la gare d’Ueno."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "oniyanma-ecute-ueno__ueno",
+"name_ja": "おにやんま エキュート上野",
+"name_romaji": "Oniyanma Ecute Ueno",
+"tabelog_rating": 3.49,
+"tabelog_review_count": 393,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"bukkake_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Toriten et chikuwa-ten bukkake udon",
+"description_fr": "Comptoir d’udon dans la gare d’Ueno, centré sur des bols rapides de style Sanuki, notamment bukkake froid avec poulet et chikuwa frits.",
+"address": "東京都台東区上野7-1-1 エキュート上野 3F",
+"nearest_station": "上野駅",
+"area_id": "ueno",
+"city_or_ward": "Taito",
+"tabelog_url": "[https://tabelog.com/tokyo/A1311/A131101/13314023/](https://tabelog.com/tokyo/A1311/A131101/13314023/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "asakusa",
+"area_name_fr": "Asakusa",
+"area_name_ja": "浅草",
+"search_area_description": "Centre d’Asakusa autour de Senso-ji, Kaminarimon et des gares Asakusa, limité approximativement au secteur compris entre Tawaramachi et Hanayashiki.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1311/A131102/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1311/A131102/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 3,
+"results_complete": false,
+"limitations": [
+"Trois spécialistes des udon ont été vérifiés; les entrées mieux notées mais principalement classées comme soba ou restaurants japonais généralistes ont été exclues."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "kanoya__asakusa",
+"name_ja": "叶屋",
+"name_romaji": "Kanoya",
+"tabelog_rating": 3.53,
+"tabelog_review_count": 343,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"zaru_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Kashiwa-ten zaru udon",
+"description_fr": "Restaurant d’udon et de tendon près de Senso-ji, notamment connu sur Tabelog pour son zaru udon froid accompagné de tempura de poulet.",
+"address": "東京都台東区浅草1-37-12",
+"nearest_station": "浅草駅（東武・都営・メトロ）",
+"area_id": "asakusa",
+"city_or_ward": "Taito",
+"tabelog_url": "[https://tabelog.com/tokyo/A1311/A131102/13025846/](https://tabelog.com/tokyo/A1311/A131102/13025846/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "teuchi-udon-ieyasu-asakusa__asakusa",
+"name_ja": "手打ちうどん 家康 浅草店",
+"name_romaji": "Teuchi Udon Ieyasu Asakusa",
+"tabelog_rating": 3.23,
+"tabelog_review_count": 66,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"niku_udon",
+"hot_udon"
+],
+"specialty": "Ieyasu udon",
+"description_fr": "Maison de nouilles faites main proposant son Ieyasu udon garni de plusieurs viandes et légumes, ainsi que des variantes chaudes ou en sauce trempette.",
+"address": "東京都台東区浅草1-16-10",
+"nearest_station": "浅草駅（東武・都営・メトロ）",
+"area_id": "asakusa",
+"city_or_ward": "Taito",
+"tabelog_url": "[https://tabelog.com/tokyo/A1311/A131102/13099938/](https://tabelog.com/tokyo/A1311/A131102/13099938/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 3,
+"restaurant_id": "marugame-seimen-asakusa-rox__asakusa",
+"name_ja": "丸亀製麺 浅草ROX店",
+"name_romaji": "Marugame Seimen Asakusa ROX",
+"tabelog_rating": 3.09,
+"tabelog_review_count": 64,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"other_udon"
+],
+"specialty": null,
+"description_fr": "Succursale distincte classée uniquement comme restaurant d’udon sur Tabelog, située dans Asakusa ROX et proposant une offre centrée sur cette spécialité.",
+"address": "東京都台東区浅草1-26-5 ROX 3G 1F",
+"nearest_station": "浅草駅（つくばＥＸＰ）",
+"area_id": "asakusa",
+"city_or_ward": "Taito",
+"tabelog_url": "[https://tabelog.com/tokyo/A1311/A131102/13250841/](https://tabelog.com/tokyo/A1311/A131102/13250841/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "kiyosumi_shirakawa",
+"area_name_fr": "Kiyosumi-Shirakawa",
+"area_name_ja": "清澄白河",
+"search_area_description": "Autour de la station Kiyosumi-shirakawa et du musée d’Art contemporain, avec inclusion de Morishita dans un rayon accessible d’environ 800 mètres.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1313/A131303/R3341/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1313/A131303/R3341/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 2,
+"results_complete": false,
+"limitations": [
+"Deux spécialistes ont été vérifiés dans le périmètre piétonnier; les restaurants de soba et les établissements plus éloignés vers Monzen-nakacho ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "udon-kazoku-shoshinan__kiyosumi-shirakawa",
+"name_ja": "うどん家族 小進庵",
+"name_romaji": "Udon Kazoku Shoshinan",
+"tabelog_rating": 3.33,
+"tabelog_review_count": 107,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Ebi-ten tsuke udon",
+"description_fr": "Restaurant d’udon et tempura de Kiyosumi-Shirakawa, présentant des nouilles de style Sanuki et des udon froids à tremper avec tempura de crevette.",
+"address": "東京都江東区三好4-8-3",
+"nearest_station": "清澄白河駅",
+"area_id": "kiyosumi_shirakawa",
+"city_or_ward": "Koto",
+"tabelog_url": "[https://tabelog.com/tokyo/A1313/A131303/13272274/](https://tabelog.com/tokyo/A1313/A131303/13272274/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "kogane-seimenjo-morishita__morishita",
+"name_ja": "こがね製麺所 森下店",
+"name_romaji": "Kogane Seimenjo Morishita",
+"tabelog_rating": 3.31,
+"tabelog_review_count": 320,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"bukkake_udon",
+"cold_udon"
+],
+"specialty": "Bukkake udon",
+"description_fr": "Comptoir spécialisé de Morishita proposant des udon de style Sanuki, avec plusieurs préparations simples dont le bukkake froid clairement présenté sur Tabelog.",
+"address": "東京都江東区新大橋3-3-5",
+"nearest_station": "森下駅",
+"area_id": "kiyosumi_shirakawa",
+"city_or_ward": "Koto",
+"tabelog_url": "[https://tabelog.com/tokyo/A1312/A131201/13205180/](https://tabelog.com/tokyo/A1312/A131201/13205180/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "akihabara",
+"area_name_fr": "Akihabara",
+"area_name_ja": "秋葉原",
+"search_area_description": "Akihabara et sa frange est jusqu’à Higashi-kanda et Asakusabashi, dans un rayon d’environ un kilomètre depuis la gare JR Akihabara.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1310/A131001/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1310/A131001/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul spécialiste récent a pu être vérifié sans ambiguïté dans le périmètre retenu; plusieurs résultats Tabelog étaient mixtes ou insuffisamment documentés."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "sanuki-udon-yutaka__higashi-kanda",
+"name_ja": "讃岐うどん 豐香",
+"name_romaji": "Sanuki Udon Yutaka",
+"tabelog_rating": 3.33,
+"tabelog_review_count": 60,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": null,
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"tempura_udon"
+],
+"specialty": "Sanuki udon avec tempura",
+"description_fr": "Petit comptoir spécialisé en Sanuki udon à Higashi-kanda, dont Tabelog met en avant les nouilles, le bouillon et les tempura préparés avec soin.",
+"address": "東京都千代田区東神田3-2-4 東神田サマリヤマンション 101",
+"nearest_station": "浅草橋駅",
+"area_id": "akihabara",
+"city_or_ward": "Chiyoda",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131001/13316306/](https://tabelog.com/tokyo/A1310/A131001/13316306/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "jimbocho",
+"area_name_fr": "Jimbocho",
+"area_name_ja": "神保町",
+"search_area_description": "Jimbocho et Kanda-Ogawamachi, dans un rayon piétonnier d’environ 600 mètres autour de la station Jimbocho, sans inclure Suidobashi.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1310/A131003/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1310/A131003/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 3,
+"results_complete": false,
+"limitations": [
+"Trois spécialistes du noyau Jimbocho–Ogawamachi ont été retenus; les établissements de Suidobashi et les restaurants où les udon ne sont pas dominants ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "udon-maruka__jimbocho",
+"name_ja": "うどん 丸香",
+"name_romaji": "Udon Maruka",
+"tabelog_rating": 3.8,
+"tabelog_review_count": 6881,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"kake_udon",
+"kamaage_udon",
+"cold_udon"
+],
+"specialty": "Kake udon au bouillon d’iriko",
+"description_fr": "Spécialiste de Sanuki udon proposant kake, kamaage et préparations froides, avec un bouillon d’iriko d’Ibuki régulièrement décrit sur sa fiche Tabelog.",
+"address": "東京都千代田区神田小川町3-16-1 ニュー駿河台ビル 1F",
+"nearest_station": "神保町駅",
+"area_id": "jimbocho",
+"city_or_ward": "Chiyoda",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131003/13000629/](https://tabelog.com/tokyo/A1310/A131003/13000629/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "hitashiro__jimbocho",
+"name_ja": "直白",
+"name_romaji": "Hitashiro",
+"tabelog_rating": 3.56,
+"tabelog_review_count": 336,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"cold_udon",
+"tempura_udon"
+],
+"specialty": "Hiyakake et assortiment de tempura",
+"description_fr": "Maison de teuchi udon près de Jimbocho, connue pour son hiyakake limpide et ses assortiments associant nouilles froides et tempura fraîchement frits.",
+"address": "東京都千代田区神田猿楽町1-5-3 リッツお茶の水ビル 1F",
+"nearest_station": "神保町駅",
+"area_id": "jimbocho",
+"city_or_ward": "Chiyoda",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131003/13171457/](https://tabelog.com/tokyo/A1310/A131003/13171457/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 3,
+"restaurant_id": "buzen-kanda-ogawamachi__kanda-ogawamachi",
+"name_ja": "武膳 神田小川町店",
+"name_romaji": "Buzen Kanda Ogawamachi",
+"tabelog_rating": 3.42,
+"tabelog_review_count": 262,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"tempura_udon",
+"hot_udon"
+],
+"specialty": "Goboten udon",
+"description_fr": "Restaurant d’udon de style Buzen situé à Ogawamachi, particulièrement associé sur Tabelog aux bols chauds garnis de tempura de racine de bardane.",
+"address": "東京都千代田区神田小川町3-11-2 インペリアル御茶ノ水Ｂ 102",
+"nearest_station": "小川町駅",
+"area_id": "jimbocho",
+"city_or_ward": "Chiyoda",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131002/13009126/](https://tabelog.com/tokyo/A1310/A131002/13009126/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "hongo_bunkyo_university",
+"area_name_fr": "Hongo / Bunkyo / Université de Tokyo",
+"area_name_ja": "本郷・文京区・東京大学周辺",
+"search_area_description": "Hongo, campus Hongo de l’Université de Tokyo et sud de Bunkyo jusqu’à Kasuga et Koishikawa, sans extension vers Ueno ou Suidobashi.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1310/A131004/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1310/A131004/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 3,
+"results_complete": false,
+"limitations": [
+"Trois spécialistes ont été vérifiés dans Hongo et le sud de Bunkyo; les restaurants de soba dominants et les établissements hors de ce périmètre ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "tokyo-light-blue-hongo-3__hongo",
+"name_ja": "トウキョウライトブルー ホンゴウスリー",
+"name_romaji": "TOKYO LIGHT BLUE HONGO-3",
+"tabelog_rating": 3.68,
+"tabelog_review_count": 1492,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"bukkake_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Toriten chikuwa-ten bukkake",
+"description_fr": "Comptoir de Sanuki udon à Hongo-sanchome, connu pour ses bukkake froids généreusement garnis de tempura de poulet et de chikuwa.",
+"address": "東京都文京区本郷2-39-7",
+"nearest_station": "本郷三丁目駅",
+"area_id": "hongo_bunkyo_university",
+"city_or_ward": "Bunkyo",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131004/13240246/](https://tabelog.com/tokyo/A1310/A131004/13240246/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "misonikomin__hongo",
+"name_ja": "酒と味噌煮込み 味噌煮込罠",
+"name_romaji": "Sake to Misonikomi Misonikomin",
+"tabelog_rating": 3.68,
+"tabelog_review_count": 1101,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥2,000～¥2,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"hot_udon",
+"other_udon"
+],
+"specialty": "Miso nikomi udon",
+"description_fr": "Spécialiste du miso nikomi udon servi brûlant en marmite, décliné en version classique ou italienne, à quelques minutes de Hongo-sanchome.",
+"address": "東京都文京区本郷3-31-15 菅谷ビル",
+"nearest_station": "本郷三丁目駅",
+"area_id": "hongo_bunkyo_university",
+"city_or_ward": "Bunkyo",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131004/13036030/](https://tabelog.com/tokyo/A1310/A131004/13036030/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 3,
+"restaurant_id": "udon-yukase__koishikawa",
+"name_ja": "うどん ゆかせ",
+"name_romaji": "Udon Yukase",
+"tabelog_rating": 3.21,
+"tabelog_review_count": 29,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": null,
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"bukkake_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Bukkake avec toriten, chikuwa-ten et œuf",
+"description_fr": "Petit spécialiste de Koishikawa proposant notamment un bukkake accompagné de tempura de poulet, chikuwa et œuf, identifié dans les menus Tabelog.",
+"address": "東京都文京区小石川1-15-12 中銀小石川マンション 106",
+"nearest_station": "春日駅",
+"area_id": "hongo_bunkyo_university",
+"city_or_ward": "Bunkyo",
+"tabelog_url": "[https://tabelog.com/tokyo/A1310/A131004/13312650/](https://tabelog.com/tokyo/A1310/A131004/13312650/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "roppongi",
+"area_name_fr": "Roppongi",
+"area_name_ja": "六本木",
+"search_area_description": "Roppongi Crossing, Tokyo Midtown et rues adjacentes jusqu’à Nogizaka, dans un rayon d’environ 700 mètres autour de la station Roppongi.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1307/A130701/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1307/A130701/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 3,
+"results_complete": false,
+"limitations": [
+"Trois restaurants dont la catégorie principale est l’udon ont été vérifiés; les izakaya et restaurants japonais où les udon sont secondaires ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "roppongi-udon__roppongi",
+"name_ja": "#六本木うどん",
+"name_romaji": "#Roppongi Udon",
+"tabelog_rating": 3.5,
+"tabelog_review_count": 349,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"bukkake_udon",
+"curry_udon",
+"cold_udon"
+],
+"specialty": "Oyako-ten bukkake",
+"description_fr": "Maison travaillant les nouilles à la main selon le principe fraîchement pétri, coupé et cuit, avec bukkake, curry udon et tempura.",
+"address": "東京都港区六本木7-13-2",
+"nearest_station": "六本木駅",
+"area_id": "roppongi",
+"city_or_ward": "Minato",
+"tabelog_url": "[https://tabelog.com/tokyo/A1307/A130701/13307867/](https://tabelog.com/tokyo/A1307/A130701/13307867/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "ibuki-udon-tokyo-midtown-roppongi__roppongi",
+"name_ja": "伊吹うどん 東京ミッドタウン六本木店",
+"name_romaji": "Ibuki Udon Tokyo Midtown Roppongi",
+"tabelog_rating": 3.49,
+"tabelog_review_count": 392,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"kake_udon",
+"cold_udon",
+"hot_udon"
+],
+"specialty": "Kake udon au bouillon d’iriko d’Ibuki",
+"description_fr": "Comptoir de Tokyo Midtown spécialisé dans les Sanuki udon et un bouillon aux sardines iriko d’Ibuki, servi avec des variantes chaudes ou froides.",
+"address": "東京都港区赤坂9-7-1 東京ミッドタウンガレリア B1F",
+"nearest_station": "六本木駅",
+"area_id": "roppongi",
+"city_or_ward": "Minato",
+"tabelog_url": "[https://tabelog.com/tokyo/A1307/A130701/13241173/](https://tabelog.com/tokyo/A1307/A130701/13241173/)",
+"official_website_url": "[https://www.tokyo-midtown.com/jp/restaurants/SOP00190005/](https://www.tokyo-midtown.com/jp/restaurants/SOP00190005/)",
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": true
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 3,
+"restaurant_id": "tsurutontan-udon-noodle-brasserie-roppongi__roppongi",
+"name_ja": "つるとんたん UDON NOODLE Brasserie 六本木",
+"name_romaji": "Tsurutontan UDON NOODLE Brasserie Roppongi",
+"tabelog_rating": 3.39,
+"tabelog_review_count": 739,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥2,000～¥2,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"hot_udon",
+"cold_udon",
+"other_udon"
+],
+"specialty": "Grand choix d’udon chauds et froids",
+"description_fr": "Brasserie dont la catégorie principale Tabelog reste l’udon, avec une carte étendue de bols traditionnels et créatifs servis chauds ou froids.",
+"address": "東京都港区六本木7-8-6 AXALL ROPPONGI 7F",
+"nearest_station": "六本木駅",
+"area_id": "roppongi",
+"city_or_ward": "Minato",
+"tabelog_url": "[https://tabelog.com/tokyo/A1307/A130701/13299475/](https://tabelog.com/tokyo/A1307/A130701/13299475/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "shibuya",
+"area_name_fr": "Shibuya",
+"area_name_ja": "渋谷",
+"search_area_description": "Autour de la gare de Shibuya, Udagawacho, Dogenzaka, Maruyamacho et Shinsen, dans un rayon d’environ un kilomètre du croisement de Shibuya.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1303/A130301/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1303/A130301/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 4,
+"results_complete": false,
+"limitations": [
+"Quatre spécialistes ont été retenus; les restaurants japonais mixtes et ceux dont la spécialité d’udon ne pouvait pas être démontrée ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "yashima-maruyamacho__shibuya",
+"name_ja": "やしま 円山町店",
+"name_romaji": "Yashima Maruyamacho",
+"tabelog_rating": 3.58,
+"tabelog_review_count": 742,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "¥2,000～¥2,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"tempura_udon",
+"hot_udon"
+],
+"specialty": "Mugi-miso udon et tempura",
+"description_fr": "Maison spécialisée en Sanuki udon à Maruyamacho, proposant notamment un bol chaud au miso d’orge et plusieurs accompagnements de tempura.",
+"address": "東京都渋谷区円山町10-13 サンライズ渋谷 1F",
+"nearest_station": "神泉駅",
+"area_id": "shibuya",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1303/A130301/13159039/](https://tabelog.com/tokyo/A1303/A130301/13159039/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "kagawa-ippuku-art__shibuya",
+"name_ja": "香川一福ART",
+"name_romaji": "Kagawa Ippuku ART",
+"tabelog_rating": 3.56,
+"tabelog_review_count": 709,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"curry_udon",
+"other_udon"
+],
+"specialty": "Udon créatifs, dont curry vert",
+"description_fr": "Adresse de Sanuki udon près de Shibuya Stream, distinguée par des nouilles à forte mâche et des créations comme le curry vert udon.",
+"address": "東京都渋谷区渋谷3-17-4 アクシーズ7号館ビル 1F",
+"nearest_station": "渋谷駅",
+"area_id": "shibuya",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1303/A130301/13308738/](https://tabelog.com/tokyo/A1303/A130301/13308738/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 3,
+"restaurant_id": "oniyanma-shibuya-parco__shibuya",
+"name_ja": "おにやんま 渋谷パルコ店",
+"name_romaji": "Oniyanma Shibuya PARCO",
+"tabelog_rating": 3.51,
+"tabelog_review_count": 531,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": null,
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"bukkake_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Toriten chikuwa-ten bukkake",
+"description_fr": "Comptoir d’udon de Shibuya PARCO consacré aux préparations de style Sanuki, notamment bukkake froid avec tempura de poulet et chikuwa.",
+"address": "東京都渋谷区宇田川町15-1 渋谷PARCO B1F",
+"nearest_station": "渋谷駅",
+"area_id": "shibuya",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1303/A130301/13241218/](https://tabelog.com/tokyo/A1303/A130301/13241218/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 4,
+"restaurant_id": "niku-udon-nikumeshi-jinza-shibuya__maruyamacho",
+"name_ja": "肉うどん 肉めし 甚三 渋谷本店",
+"name_romaji": "Niku Udon Nikumeshi Jinza Shibuya Honten",
+"tabelog_rating": 3.44,
+"tabelog_review_count": 158,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": null,
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"handmade_udon",
+"niku_udon",
+"hot_udon"
+],
+"specialty": "Niku udon spécial au porc et toriten",
+"description_fr": "Spécialiste du niku udon à Maruyamacho, centré sur des nouilles Sanuki maison et un bol signature associant porc et tempura de poulet.",
+"address": "東京都渋谷区円山町20-3 アパホテル渋谷道玄坂上 南館1F",
+"nearest_station": "神泉駅",
+"area_id": "shibuya",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1303/A130301/13307254/](https://tabelog.com/tokyo/A1303/A130301/13307254/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "harajuku",
+"area_name_fr": "Harajuku",
+"area_name_ja": "原宿",
+"search_area_description": "Harajuku, Jingumae et Kitasando, entre les gares Harajuku, Meiji-jingumae et Kitasando, sans extension vers le cœur d’Omotesando.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1306/A130601/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1306/A130601/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 2,
+"results_complete": false,
+"limitations": [
+"Deux spécialistes solidement documentés ont été retenus; les restaurants créatifs mixtes et les bars proposant des udon ont été exclus par prudence."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "mensan__jingumae",
+"name_ja": "麺散",
+"name_romaji": "Mensan",
+"tabelog_rating": 3.58,
+"tabelog_review_count": 1441,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "¥2,000～¥2,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"hot_udon",
+"cold_udon",
+"other_udon"
+],
+"specialty": "Udon fraîchement préparés et créations comme le carbonara",
+"description_fr": "Maison de Jingumae centrée sur les udon fraîchement travaillés, avec préparations classiques chaudes ou froides et créations identifiables comme le carbonara udon.",
+"address": "東京都渋谷区神宮前6-13-7",
+"nearest_station": "明治神宮前駅",
+"area_id": "harajuku",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1306/A130601/13225567/](https://tabelog.com/tokyo/A1306/A130601/13225567/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "kuro-udon-yamacho-harajuku__sendagaya",
+"name_ja": "黒うどん 山長 原宿店",
+"name_romaji": "Kuro Udon Yamacho Harajuku",
+"tabelog_rating": 3.48,
+"tabelog_review_count": 222,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"hot_udon",
+"nabeyaki_udon"
+],
+"specialty": "Miso nikomi kuro udon",
+"description_fr": "Spécialiste historique du kuro udon, servi en marmite avec un bouillon au miso et des nouilles épaisses incorporant une farine moins raffinée.",
+"address": "東京都渋谷区千駄ヶ谷3-52-3 B1F",
+"nearest_station": "北参道駅",
+"area_id": "harajuku",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1306/A130601/13012969/](https://tabelog.com/tokyo/A1306/A130601/13012969/)",
+"official_website_url": "[http://www.yamacho-kuroudon.com/shimaiten.html](http://www.yamacho-kuroudon.com/shimaiten.html)",
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": true
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "omotesando",
+"area_name_fr": "Omotesando",
+"area_name_ja": "表参道",
+"search_area_description": "Autour de la station Omotesando et des avenues Aoyama-dori et Omotesando, dans un rayon d’environ 500 mètres, sans inclure Harajuku.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1306/A130602/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1306/A130602/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul établissement mixte satisfaisait les critères renforcés: catégorie principale udon et spécialité de curry udon clairement mise en avant sur Tabelog."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "teuchi-shimada__omotesando",
+"name_ja": "手打 しまだ",
+"name_romaji": "Teuchi Shimada",
+"tabelog_rating": 3.63,
+"tabelog_review_count": 1178,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥4,000～¥4,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"curry_udon",
+"hot_udon"
+],
+"specialty": "Curry udon avec viande et tempura de crevette",
+"description_fr": "Établissement mixte retenu car l’udon est la première catégorie Tabelog et son curry udon artisanal constitue une spécialité emblématique clairement documentée.",
+"address": "東京都港区南青山3-13-3",
+"nearest_station": "表参道駅",
+"area_id": "omotesando",
+"city_or_ward": "Minato",
+"tabelog_url": "[https://tabelog.com/tokyo/A1306/A130602/13006991/](https://tabelog.com/tokyo/A1306/A130602/13006991/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "shinjuku",
+"area_name_fr": "Shinjuku",
+"area_name_ja": "新宿",
+"search_area_description": "Gare de Shinjuku, Nishi-shinjuku et Minami-shinjuku, dans un rayon d’environ un kilomètre, sans extension vers Shinjuku-gyoen ou Okubo.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1304/A130401/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1304/A130401/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 5,
+"results_complete": false,
+"limitations": [
+"Cinq spécialistes ont été vérifiés après exclusion d’un établissement de nouilles mixtes ramen-udon et des restaurants où l’udon n’était pas suffisamment dominant."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "udon-shin__minami-shinjuku",
+"name_ja": "うどん 慎",
+"name_romaji": "Udon Shin",
+"tabelog_rating": 3.69,
+"tabelog_review_count": 2633,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"bukkake_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Zaru et bukkake avec tempura",
+"description_fr": "Spécialiste de Minami-shinjuku centré sur des udon artisanaux, servis notamment en zaru ou bukkake avec différentes tempura préparées à la commande.",
+"address": "東京都渋谷区代々木2-20-16 相馬ビル",
+"nearest_station": "南新宿駅",
+"area_id": "shinjuku",
+"city_or_ward": "Shibuya",
+"tabelog_url": "[https://tabelog.com/tokyo/A1304/A130401/13125862/](https://tabelog.com/tokyo/A1304/A130401/13125862/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 2,
+"restaurant_id": "itteki-hassenya-shinjuku-honten__nishi-shinjuku",
+"name_ja": "一滴八銭屋 新宿本店",
+"name_romaji": "Itteki Hassenya Shinjuku Honten",
+"tabelog_rating": 3.62,
+"tabelog_review_count": 2039,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "¥4,000～¥4,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"hot_udon",
+"other_udon"
+],
+"specialty": "Udon créatifs et shiro-niku udon",
+"description_fr": "Restaurant dont l’udon est la catégorie principale, proposant une gamme importante de bols créatifs et un service distinct entre déjeuner spécialisé et dîner.",
+"address": "東京都新宿区西新宿1-15-9 KCビル 2F・3F",
+"nearest_station": "新宿駅",
+"area_id": "shinjuku",
+"city_or_ward": "Shinjuku",
+"tabelog_url": "[https://tabelog.com/tokyo/A1304/A130401/13000760/](https://tabelog.com/tokyo/A1304/A130401/13000760/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 3,
+"restaurant_id": "kirimugiya-jinroku-nishi-shinjuku-naruko__nishi-shinjuku",
+"name_ja": "切麦や 甚六 西新宿成子店",
+"name_romaji": "Kirimugiya Jinroku Nishi-shinjuku Naruko",
+"tabelog_rating": 3.59,
+"tabelog_review_count": 540,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥2,000～¥2,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"handmade_udon",
+"bukkake_udon",
+"tempura_udon",
+"cold_udon"
+],
+"specialty": "Oyako-ten bukkake et hiyakake",
+"description_fr": "Maison de nouilles fabriquées sur place avec des farines japonaises, proposant hiyakake et bukkake froids accompagnés notamment de tempura de poulet et œuf.",
+"address": "東京都新宿区西新宿8-11-1 日東星野ビル B1F",
+"nearest_station": "西新宿駅",
+"area_id": "shinjuku",
+"city_or_ward": "Shinjuku",
+"tabelog_url": "[https://tabelog.com/tokyo/A1304/A130401/13268735/](https://tabelog.com/tokyo/A1304/A130401/13268735/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 4,
+"restaurant_id": "kagawa-ippuku-nishi-shinjuku__nishi-shinjuku",
+"name_ja": "香川一福 西新宿",
+"name_romaji": "Kagawa Ippuku Nishi-shinjuku",
+"tabelog_rating": 3.57,
+"tabelog_review_count": 511,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "～¥999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"kake_udon",
+"hot_udon"
+],
+"specialty": "Kake Sanuki udon",
+"description_fr": "Succursale spécialisée en Sanuki udon près de Shinjuku-nishiguchi, avec une carte centrée sur les bols simples et les tempura en accompagnement.",
+"address": "東京都新宿区西新宿7-9-15 新宿ダイカンプラザ ビズネス 清田ビル 1F",
+"nearest_station": "新宿西口駅",
+"area_id": "shinjuku",
+"city_or_ward": "Shinjuku",
+"tabelog_url": "[https://tabelog.com/tokyo/A1304/A130401/13304363/](https://tabelog.com/tokyo/A1304/A130401/13304363/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+},
+{
+"rank": 5,
+"restaurant_id": "tokyo-mentsudan__nishi-shinjuku",
+"name_ja": "讃岐うどん大使 東京麺通団",
+"name_romaji": "Sanuki Udon Taishi Tokyo Mentsudan",
+"tabelog_rating": 3.54,
+"tabelog_review_count": 1197,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"kake_udon",
+"kamaage_udon",
+"cold_udon",
+"hot_udon"
+],
+"specialty": "Kake et kamatama Sanuki udon",
+"description_fr": "Comptoir de style atelier Sanuki à Nishi-shinjuku, proposant kake, kamatama et udon froids, avec un bouillon à l’iriko clairement décrit sur Tabelog.",
+"address": "東京都新宿区西新宿7-9-15 ダイカンプラザ ビジネス清田ビル 1F",
+"nearest_station": "新宿西口駅",
+"area_id": "shinjuku",
+"city_or_ward": "Shinjuku",
+"tabelog_url": "[https://tabelog.com/tokyo/A1304/A130401/13004352/](https://tabelog.com/tokyo/A1304/A130401/13004352/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "odaiba",
+"area_name_fr": "Odaiba",
+"area_name_ja": "お台場",
+"search_area_description": "Odaiba central autour de Decks Tokyo Beach, Aqua City, Tokyo Teleport et Odaiba-kaihinkoen, sans extension vers Ariake ou Toyosu.",
+"tabelog_search_url": "[https://tabelog.com/tokyo/A1313/A131306/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tokyo/A1313/A131306/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul restaurant clairement centré sur les udon a pu être vérifié dans Odaiba central; les food courts mixtes et établissements d’Ariake ont été exclus."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "yamashita-honki-udon-decks-tokyo-beach__odaiba",
+"name_ja": "山下本気うどん デックス東京ビーチ",
+"name_romaji": "Yamashita Honki Udon Decks Tokyo Beach",
+"tabelog_rating": 3.19,
+"tabelog_review_count": 144,
+"tabelog_lunch_price_range": "¥1,000～¥1,999",
+"tabelog_dinner_price_range": "¥1,000～¥1,999",
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"sanuki_udon",
+"curry_udon",
+"hot_udon"
+],
+"specialty": "Shiroi mentaiko cheese cream udon",
+"description_fr": "Restaurant de Sanuki udon à Decks Tokyo Beach, mettant en avant des nouilles fraîches et un bol crémeux au mentaiko et fromage.",
+"address": "東京都港区台場1-6-1 デックス東京ビーチ シーサイドモール 3F",
+"nearest_station": "お台場海浜公園駅",
+"area_id": "odaiba",
+"city_or_ward": "Minato",
+"tabelog_url": "[https://tabelog.com/tokyo/A1313/A131306/13294295/](https://tabelog.com/tokyo/A1313/A131306/13294295/)",
+"official_website_url": "[https://yamashita-honki-udon.com/](https://yamashita-honki-udon.com/)",
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": true
+},
+"verified_at": "2026-07-17"
+}
+]
+},
+{
+"area_id": "nikko_national_park",
+"area_name_fr": "Parc national de Nikko",
+"area_name_ja": "日光国立公園周辺",
+"search_area_description": "Ville de Nikko, gares JR Nikko et Tobu-Nikko, axe vers Shinkyo et sanctuaires, ainsi que secteurs accessibles du parc; Imaichi et Kinugawa sont exclus.",
+"tabelog_search_url": "[https://tabelog.com/tochigi/A0903/A090301/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1](https://tabelog.com/tochigi/A0903/A090301/rstLst/udon/?Srt=D&SrtT=rt&sort_mode=1)",
+"result_count": 1,
+"results_complete": false,
+"limitations": [
+"Un seul établissement à catégorie principale udon et note vérifiable a été identifié; la majorité des résultats mieux notés étaient des restaurants de soba ou généralistes."
+],
+"restaurants": [
+{
+"rank": 1,
+"restaurant_id": "yamaroku__nikko",
+"name_ja": "山六",
+"name_romaji": "Yamaroku",
+"tabelog_rating": 3.18,
+"tabelog_review_count": 24,
+"tabelog_lunch_price_range": "～¥999",
+"tabelog_dinner_price_range": null,
+"estimated_average_price_jpy": null,
+"udon_styles": [
+"nabeyaki_udon",
+"hot_udon"
+],
+"specialty": "Umakara nabeyaki udon",
+"description_fr": "Restaurant près de Tobu-Nikko dont l’udon est la première catégorie Tabelog, avec notamment un nabeyaki épicé servi chaud et des plats de riz.",
+"address": "栃木県日光市相生町6-7",
+"nearest_station": "東武日光駅",
+"area_id": "nikko_national_park",
+"city_or_ward": "Nikko",
+"tabelog_url": "[https://tabelog.com/tochigi/A0903/A090301/9016672/](https://tabelog.com/tochigi/A0903/A090301/9016672/)",
+"official_website_url": null,
+"reservation_url": null,
+"business_status": "open",
+"cross_area_duplicate": false,
+"data_quality": {
+"rating_verified": true,
+"price_verified": true,
+"location_verified": true,
+"official_website_verified": false
+},
+"verified_at": "2026-07-17"
+}
+]
+}
+]
+}
