@@ -1,3 +1,231 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Japon 2026 Lite</title>
+  <style>
+:root {
+  --red: #bc002d;
+  --navy: #10233f;
+  --ink: #172033;
+  --muted: #647084;
+  --bg: #f7f3ed;
+  --card: #fffefa;
+  --line: #e7ded2;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 85% 4%, #bc002d18 0 70px, transparent 72px), var(--bg);
+}
+
+.app {
+  max-width: 980px;
+  margin: auto;
+  min-height: 100vh;
+  padding-bottom: 88px;
+}
+
+header {
+  background: linear-gradient(135deg, var(--navy), #19395f);
+  color: white;
+  padding: 22px 18px;
+  border-radius: 0 0 28px 28px;
+}
+
+h1, h2, h3 { margin: .2rem 0; }
+p { line-height: 1.45; }
+
+.eyebrow,
+.muted {
+  color: var(--muted);
+  font-size: .86rem;
+}
+
+.hero small {
+  color: #ffd6df;
+  letter-spacing: .1em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.card,
+.filter,
+.day,
+.restaurant {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 8px 24px #10233f0d;
+}
+
+.stat b {
+  display: block;
+  font-size: 1.5rem;
+  color: var(--red);
+}
+
+main { padding: 16px; }
+.section { display: none; }
+.section.active { display: block; }
+
+.filters {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.filters select,
+.filters input,
+.filters button,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+  font: inherit;
+}
+
+.cards {
+  display: grid;
+  gap: 12px;
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.badge {
+  background: #f1e8dc;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: .78rem;
+}
+
+.warn { background: #fff1c2; color: #6f4b00; }
+.ok { background: #e9f7ef; color: #17603a; }
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button,
+.link,
+.reset {
+  border: 0;
+  border-radius: 12px;
+  background: var(--navy);
+  color: white;
+  padding: 10px 12px;
+  text-decoration: none;
+  font: inherit;
+}
+
+.ghost {
+  background: #f2f4f8 !important;
+  color: var(--navy) !important;
+}
+
+.fav.on {
+  background: var(--red);
+  color: white;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow: auto;
+  margin: 12px 0;
+}
+
+.tabs button {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 999px;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+
+.tabs button.active {
+  background: var(--navy);
+  color: white;
+}
+
+.budgetbar {
+  height: 14px;
+  background: #eadfd4;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.budgetbar i {
+  display: block;
+  height: 100%;
+  background: var(--red);
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(980px, 100%);
+  height: 72px;
+  background: white;
+  border-top: 1px solid var(--line);
+  display: flex;
+  z-index: 3;
+}
+
+nav button {
+  flex: 1;
+  border: 0;
+  background: white;
+  color: var(--muted);
+  font-size: .75rem;
+}
+
+nav button.active {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.count {
+  font-weight: 700;
+  color: var(--red);
+}
+
+@media (min-width: 760px) {
+  .grid { grid-template-columns: repeat(4, 1fr); }
+  .filters { grid-template-columns: repeat(5, 1fr); }
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  header {
+    margin-top: 12px;
+    border-radius: 28px;
+  }
+}
+  </style>
+</head>
+<body>
+  <script>
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Japon 2026 Lite</title><style>
 :root{--red:#bc002d;--navy:#10233f;--ink:#172033;--muted:#647084;--bg:#f7f3ed;--card:#fffefa;--line:#e7ded2;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 4%,#bc002d18 0 70px,transparent 72px),var(--bg)}.app{max-width:980px;margin:auto;min-height:100vh;padding-bottom:88px}header{background:linear-gradient(135deg,var(--navy),#19395f);color:white;padding:22px 18px;border-radius:0 0 28px 28px}h1,h2,h3{margin:.2rem 0}p{line-height:1.45}.eyebrow,.muted{color:var(--muted);font-size:.86rem}.hero small{color:#ffd6df;letter-spacing:.1em}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card,.filter,.day,.restaurant{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 8px 24px #10233f0d}.stat b{display:block;font-size:1.5rem;color:var(--red)}main{padding:16px}.section{display:none}.section.active{display:block}.filters{display:grid;gap:10px;margin:12px 0}.filters select,.filters input,.filters button,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:white;font:inherit}.cards{display:grid;gap:12px}.badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.badge{background:#f1e8dc;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:.78rem}.warn{background:#fff1c2;color:#6f4b00}.ok{background:#e9f7ef;color:#17603a}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button,.link,.reset{border:0;border-radius:12px;background:var(--navy);color:white;padding:10px 12px;text-decoration:none;font:inherit}.ghost{background:#f2f4f8!important;color:var(--navy)!important}.fav.on{background:var(--red);color:white}.tabs{display:flex;gap:8px;overflow:auto;margin:12px 0}.tabs button{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;white-space:nowrap}.tabs button.active{background:var(--navy);color:white}.budgetbar{height:14px;background:#eadfd4;border-radius:999px;overflow:hidden}.budgetbar i{display:block;height:100%;background:var(--red)}nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(980px,100%);height:72px;background:white;border-top:1px solid var(--line);display:flex;z-index:3}nav button{flex:1;border:0;background:white;color:var(--muted);font-size:.75rem}nav button.active{color:var(--red);font-weight:700}.count{font-weight:700;color:var(--red)}@media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}.filters{grid-template-columns:repeat(5,1fr)}.cards{grid-template-columns:repeat(2,1fr)}header{margin-top:12px;border-radius:28px}}
 </style></head><body><script>
@@ -1201,6 +1429,482 @@ const APP_SEED_DATA = {
   ]
 };
 // ===== FIN DES DONNÉES GÉNÉRÉES =====
+
+const HTML_SOURCE = document.documentElement.outerHTML;
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+const state = JSON.parse(
+  localStorage.getItem('japanLiteLocal') ||
+    '{"favorites":[],"visited":[],"notes":{},"doneActivities":[],"dailyExpenses":[]}'
+);
+state.dailyExpenses = state.dailyExpenses || [];
+
+const save = () => localStorage.setItem('japanLiteLocal', JSON.stringify(state));
+const fmt = (value) => value == null ? '—' : new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
+const jpy = (value) => value ? new Intl.NumberFormat('fr-FR').format(value) + ' ¥' : '—';
+
+function opt(id, values, label) {
+  $('#' + id).innerHTML = '<option value="">' + label + '</option>' +
+    [...new Set(values.filter(Boolean))]
+      .sort()
+      .map((value) => `<option>${value}</option>`)
+      .join('');
+}
+
+function show(sectionId) {
+  $$('.section').forEach((section) => section.classList.toggle('active', section.id === sectionId));
+  $$('nav button').forEach((button) => button.classList.toggle('active', button.dataset.sec === sectionId));
+  localStorage.setItem('japanLitePrefs', sectionId);
+}
+
+function badges(items) {
+  return '<div class="badges">' +
+    items
+      .filter(Boolean)
+      .map((item) => `<span class="badge">${item}</span>`)
+      .join('') +
+    '</div>';
+}
+
+function taskCard(task) {
+  return `
+    <article class="card">
+      ${badges([task.priority, task.owner, task.status])}
+      <h3>${task.title}</h3>
+      <p>Échéance : ${task.dueDate}</p>
+    </article>
+  `;
+}
+
+function init() {
+  const data = APP_SEED_DATA;
+  const metadata = data.metadata;
+
+  $('#home').innerHTML = `
+    <div class="hero">
+      <small>JAPON 2026</small>
+      <h2>Version Lite</h2>
+      <p>${metadata.tripStart} → ${metadata.tripEnd} · ${metadata.days} jours</p>
+    </div>
+    <div class="grid">
+      <div class="card stat"><span>Budget</span><b>${fmt(metadata.budgetInitial)}</b></div>
+      <div class="card stat"><span>Payé</span><b>${fmt(metadata.totalPaid)}</b></div>
+      <div class="card stat"><span>Reste</span><b>${fmt(metadata.budgetRemaining)}</b></div>
+      <div class="card stat"><span>Activités</span><b>${data.activities.length}</b></div>
+    </div>
+    <h3>Alertes tarifs</h3>
+    ${badges(metadata.dataWarnings.map((warning) => warning + ' · Tarif à confirmer'))}
+    <h3>Prochain événement</h3>
+    <div class="card">${(data.planning[0] || { activities: 'À compléter' }).activities}</div>
+    <h3>Prochaines tâches</h3>
+    <div class="cards">${data.tasks.slice(0, 4).map(taskCard).join('')}</div>
+  `;
+
+  renderProgram();
+  renderActivities();
+  renderRestaurants();
+  renderMore();
+
+  opt('actArea', data.activities.map((activity) => activity.area), 'Quartier');
+  opt('actStatus', data.activities.map((activity) => activity.status), 'Statut');
+  opt('actPriority', data.activities.map((activity) => activity.priority), 'Priorité');
+  opt('actDecision', data.activities.map((activity) => activity.commonDecision), 'Décision');
+  opt('actResa', data.activities.map((activity) => activity.reservation), 'Réservation');
+  opt('restCat', data.restaurants.flatMap((restaurant) => restaurant.categories || [restaurant.category]), 'Catégorie');
+  opt('restArea', data.restaurants.map((restaurant) => restaurant.area), 'Quartier');
+
+  $$('.filters select,.filters input').forEach((input) => {
+    input.addEventListener('input', () => {
+      renderActivities();
+      renderRestaurants();
+    });
+  });
+
+  $('#reset').onclick = () => {
+    if (confirm('Réinitialiser mes données locales ?')) {
+      localStorage.removeItem('japanLiteLocal');
+      location.reload();
+    }
+  };
+
+  show(localStorage.getItem('japanLitePrefs') || 'home');
+}
+
+function renderProgram() {
+  const planning = APP_SEED_DATA.planning;
+  $('#program').innerHTML = `
+    <h2>Programme</h2>
+    <div class="tabs">
+      ${planning.map((item, index) => `
+        <button class="${index ? '' : 'active'}" onclick="selDate('${item.date}', this)">${item.date}</button>
+      `).join('')}
+    </div>
+    <div id="days"></div>
+  `;
+  selDate(planning[0]?.date);
+}
+
+function selDate(date, button) {
+  if (button) {
+    $$('.tabs button').forEach((tab) => tab.classList.remove('active'));
+    button.classList.add('active');
+  }
+
+  const items = APP_SEED_DATA.planning.filter((item) => !date || item.date === date);
+  $('#days').innerHTML = items.map((item) => `
+    <article class="day">
+      <h3>${item.date} · ${item.area}</h3>
+      ${badges([item.time, item.status, item.reservation])}
+      <p>${item.activities}</p>
+      <p><b>Prix :</b> ${item.price}<br><b>Notes :</b> ${item.notes}</p>
+    </article>
+  `).join('') || '<p>Journée à compléter.</p>';
+}
+
+function renderActivities() {
+  const activities = APP_SEED_DATA.activities.filter((activity) =>
+    (!$('#actArea') || !$('#actArea').value || activity.area === $('#actArea').value) &&
+    (!$('#actStatus').value || activity.status === $('#actStatus').value) &&
+    (!$('#actPriority').value || activity.priority === $('#actPriority').value) &&
+    (!$('#actDecision').value || activity.commonDecision === $('#actDecision').value) &&
+    (!$('#actResa').value || activity.reservation === $('#actResa').value)
+  );
+
+  $('#actList').innerHTML = activities.map((activity) => `
+    <article class="card">
+      <h3>${activity.name}</h3>
+      ${badges([
+        activity.area,
+        activity.status,
+        activity.priority,
+        activity.commonDecision,
+        activity.reservation,
+        activity.priceWarning ? 'Tarif à confirmer' : ''
+      ])}
+      <p>${activity.description || ''}</p>
+      <p>
+        <b>Prix :</b> ${fmt(activity.priceEur)}<br>
+        <b>Matteo :</b> ${activity.matteoOpinion}<br>
+        <b>Conjointe :</b> ${activity.partnerOpinion}<br>
+        <b>Notes :</b> ${activity.notes || '—'}
+      </p>
+      <button class="ghost" onclick="toggleDone('${activity.id}')">
+        ${state.doneActivities.includes(activity.id) ? 'Terminée' : 'Marquer terminée'}
+      </button>
+    </article>
+  `).join('');
+
+  $('#actCount').textContent = activities.length;
+}
+
+function toggleDone(id) {
+  state.doneActivities = state.doneActivities.includes(id)
+    ? state.doneActivities.filter((item) => item !== id)
+    : [...state.doneActivities, id];
+  save();
+  renderActivities();
+}
+
+function renderRestaurants() {
+  const minRating = Number($('#restMin').value || 0);
+  const favoriteFilter = $('#restFav').value;
+
+  const restaurants = APP_SEED_DATA.restaurants.filter((restaurant) =>
+    (!$('#restCat').value || (restaurant.categories || [restaurant.category]).includes($('#restCat').value)) &&
+    (!$('#restArea').value || restaurant.area === $('#restArea').value) &&
+    (!minRating || restaurant.rating >= minRating) &&
+    (!favoriteFilter || (favoriteFilter === 'favoris'
+      ? state.favorites.includes(restaurant.id)
+      : state.visited.includes(restaurant.id))) &&
+    (!$('#restPrice').value || ((restaurant.estimatedPriceJpy || 0) <= Number($('#restPrice').value)))
+  );
+
+  $('#restCount').textContent = restaurants.length;
+  $('#restList').innerHTML = restaurants.map((restaurant) => `
+    <article class="restaurant">
+      <h3>${restaurant.nameJa}</h3>
+      <p class="muted">${restaurant.nameRomaji}</p>
+      ${badges([
+        ...(restaurant.categories || [restaurant.category]),
+        restaurant.area,
+        restaurant.nearestStation,
+        '★ ' + restaurant.rating + ' (' + restaurant.reviewCount + ')'
+      ])}
+      <p>
+        <b>Prix :</b> midi ${restaurant.lunchPrice || '—'} ·
+        soir ${restaurant.dinnerPrice || '—'} ·
+        estimé ${jpy(restaurant.estimatedPriceJpy)}
+      </p>
+      <p><b>Spécialité :</b> ${restaurant.specialty || '—'}<br>${restaurant.description}</p>
+      <div class="actions">
+        <button class="fav ${state.favorites.includes(restaurant.id) ? 'on' : ''}" onclick="tog('favorites', '${restaurant.id}')">♥ Favori</button>
+        <button class="ghost" onclick="tog('visited', '${restaurant.id}')">${state.visited.includes(restaurant.id) ? 'Visité' : 'À visiter'}</button>
+        <a class="link" href="${restaurant.tabelogUrl}" target="_blank">Tabelog</a>
+        ${restaurant.reservationUrl ? `<a class="link" href="${restaurant.reservationUrl}" target="_blank">Réserver</a>` : ''}
+      </div>
+      <textarea placeholder="Note personnelle" oninput="state.notes['${restaurant.id}'] = this.value; save()">${state.notes[restaurant.id] || ''}</textarea>
+    </article>
+  `).join('');
+}
+
+function tog(key, id) {
+  state[key] = state[key].includes(id)
+    ? state[key].filter((item) => item !== id)
+    : [...state[key], id];
+  save();
+  renderRestaurants();
+}
+
+function copyHtmlFile() {
+  const text = '<!doctype html>\n' + HTML_SOURCE;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => alert('Fichier index.html copié : vous pouvez le coller dans un fichier vierge.'))
+      .catch(() => fallbackCopy(text));
+    return;
+  }
+
+  fallbackCopy(text);
+}
+
+function fallbackCopy(text) {
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.style.position = 'fixed';
+  area.style.opacity = '0';
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand('copy');
+  area.remove();
+  alert('Fichier index.html copié : vous pouvez le coller dans un fichier vierge.');
+}
+
+function tripDates() {
+  const dates = [];
+  const start = new Date(APP_SEED_DATA.metadata.tripStart + 'T00:00:00');
+  const end = new Date(APP_SEED_DATA.metadata.tripEnd + 'T00:00:00');
+
+  for (const day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) {
+    dates.push(day.toISOString().slice(0, 10));
+  }
+
+  return dates;
+}
+
+function expenseTotal(person) {
+  return state.dailyExpenses
+    .filter((expense) => !person || expense.person === person)
+    .reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
+}
+
+function addExpense() {
+  const date = $('#expenseDate').value;
+  const person = $('#expensePerson').value;
+  const category = $('#expenseCategory').value.trim() || 'Dépense';
+  const amount = Number($('#expenseAmount').value || 0);
+  const note = $('#expenseNote').value.trim();
+
+  if (!date || !person || !amount || amount < 0) {
+    alert('Merci de renseigner une date, une personne et un montant positif.');
+    return;
+  }
+
+  state.dailyExpenses.push({
+    id: 'exp-' + Date.now(),
+    date,
+    person,
+    category,
+    amount,
+    note
+  });
+  save();
+  renderMore();
+}
+
+function deleteExpense(id) {
+  state.dailyExpenses = state.dailyExpenses.filter((expense) => expense.id !== id);
+  save();
+  renderMore();
+}
+
+function exportExpensesExcel() {
+  const rows = [
+    ['Date', 'Personne', 'Catégorie', 'Montant EUR', 'Note'],
+    ...state.dailyExpenses.map((expense) => [
+      expense.date,
+      expense.person,
+      expense.category,
+      expense.amount,
+      expense.note || ''
+    ]),
+    ['TOTAL Matteo', '', '', expenseTotal('Matteo'), ''],
+    ['TOTAL Serrine', '', '', expenseTotal('Serrine'), ''],
+    ['TOTAL global', '', '', expenseTotal(), '']
+  ];
+
+  const table = '<table>' + rows.map((row) =>
+    '<tr>' + row.map((cell) =>
+      '<td>' + String(cell).replace(/[&<>]/g, (match) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[match])) + '</td>'
+    ).join('') + '</tr>'
+  ).join('') + '</table>';
+
+  const blob = new Blob(['\ufeff' + table], { type: 'application/vnd.ms-excel' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'depenses-japon-matteo-serrine.xls';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function renderDailyBudget() {
+  const dates = tripDates();
+  const byDate = dates.map((date) => ({
+    date,
+    matteo: state.dailyExpenses
+      .filter((expense) => expense.date === date && expense.person === 'Matteo')
+      .reduce((sum, expense) => sum + Number(expense.amount), 0),
+    serrine: state.dailyExpenses
+      .filter((expense) => expense.date === date && expense.person === 'Serrine')
+      .reduce((sum, expense) => sum + Number(expense.amount), 0)
+  }));
+
+  return `
+    <h3>Suivi quotidien Matteo / Serrine</h3>
+    <div class="card">
+      <div class="grid">
+        <div class="stat"><span>Total Matteo</span><b>${fmt(expenseTotal('Matteo'))}</b></div>
+        <div class="stat"><span>Total Serrine</span><b>${fmt(expenseTotal('Serrine'))}</b></div>
+      </div>
+      <div class="filters">
+        <select id="expenseDate">${dates.map((date) => `<option>${date}</option>`).join('')}</select>
+        <select id="expensePerson"><option>Matteo</option><option>Serrine</option></select>
+        <input id="expenseCategory" placeholder="Catégorie">
+        <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Montant €">
+        <input id="expenseNote" placeholder="Note">
+      </div>
+      <div class="actions">
+        <button onclick="addExpense()">Ajouter la dépense</button>
+        <button class="ghost" onclick="exportExpensesExcel()">Exporter en Excel</button>
+      </div>
+    </div>
+    <div class="cards">
+      ${byDate.map((day) => `
+        <article class="card">
+          <h3>${day.date}</h3>
+          ${badges(['Matteo ' + fmt(day.matteo), 'Serrine ' + fmt(day.serrine), 'Jour ' + fmt(day.matteo + day.serrine)])}
+          ${state.dailyExpenses
+            .filter((expense) => expense.date === day.date)
+            .map((expense) => `
+              <p>
+                <b>${expense.person}</b> · ${fmt(expense.amount)} · ${expense.category}${expense.note ? ' — ' + expense.note : ''}
+                <button class="ghost" onclick="deleteExpense('${expense.id}')">Supprimer</button>
+              </p>
+            `)
+            .join('') || '<p class="muted">Aucune dépense saisie.</p>'}
+        </article>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderMore() {
+  const metadata = APP_SEED_DATA.metadata;
+  const paid = metadata.totalPaid / metadata.budgetInitial * 100;
+
+  $('#more').innerHTML = `
+    <h2>Budget et tâches</h2>
+    <div class="card">
+      <p>
+        Cagnotte initiale : <b>${fmt(metadata.budgetInitial)}</b><br>
+        Dépenses payées : <b>${fmt(metadata.totalPaid)}</b><br>
+        Reste disponible : <b>${fmt(metadata.budgetRemaining)}</b>
+      </p>
+      <div class="budgetbar"><i style="width:${paid}%"></i></div>
+    </div>
+    <h3>Dépenses</h3>
+    <div class="cards">
+      ${APP_SEED_DATA.budget.map((budget) => `
+        <article class="card">
+          <h3>${budget.label}</h3>
+          ${badges(['Réservation ' + budget.reserved])}
+          <p>Payé : ${fmt(budget.paid)} · Reste après paiement : ${fmt(budget.remainingAfter)}</p>
+        </article>
+      `).join('')}
+    </div>
+    ${renderDailyBudget()}
+    <h3>Tâches</h3>
+    <div class="cards">${APP_SEED_DATA.tasks.map(taskCard).join('')}</div>
+    <div class="actions"><button class="ghost" onclick="copyHtmlFile()">Copier le fichier index.html</button></div>
+    <button id="reset" class="reset">Réinitialiser mes données locales</button>
+  `;
+}
+
+document.body.innerHTML = `
+  <div class="app">
+    <header>
+      <small>日本 · voyage validé ergonomie</small>
+      <h1>Notre voyage au Japon</h1>
+      <p>Application Lite autonome, données intégrées.</p>
+    </header>
+    <main>
+      <section id="home" class="section"></section>
+      <section id="program" class="section"></section>
+      <section id="activities" class="section">
+        <h2>Activités <span id="actCount" class="count"></span></h2>
+        <div class="filters">
+          <select id="actArea"></select>
+          <select id="actStatus"></select>
+          <select id="actPriority"></select>
+          <select id="actDecision"></select>
+          <select id="actResa"></select>
+        </div>
+        <div id="actList" class="cards"></div>
+      </section>
+      <section id="restaurants" class="section">
+        <h2>Restaurants <span id="restCount" class="count"></span></h2>
+        <div class="filters">
+          <select id="restCat"></select>
+          <select id="restArea"></select>
+          <select id="restFav">
+            <option value="">Favori/visité</option>
+            <option value="favoris">Favoris</option>
+            <option value="visited">Visités</option>
+          </select>
+          <select id="restPrice">
+            <option value="">Prix max</option>
+            <option value="2000">≤ 2 000 ¥</option>
+            <option value="8000">≤ 8 000 ¥</option>
+            <option value="15000">≤ 15 000 ¥</option>
+            <option value="25000">≤ 25 000 ¥</option>
+          </select>
+          <input id="restMin" type="number" min="0" max="5" step="0.1" placeholder="Note min">
+        </div>
+        <div id="restList" class="cards"></div>
+      </section>
+      <section id="more" class="section"></section>
+    </main>
+    <nav>
+      ${[
+        ['home', 'Accueil'],
+        ['program', 'Programme'],
+        ['activities', 'Activités'],
+        ['restaurants', 'Restaurants'],
+        ['more', 'Plus']
+      ].map((item) => `
+        <button data-sec="${item[0]}" onclick="show('${item[0]}')">${item[1]}</button>
+      `).join('')}
+    </nav>
+  </div>
+`;
+
+init();
+  </script>
+</body>
+</html>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const state=JSON.parse(localStorage.getItem('japanLiteLocal')||'{"favorites":[],"visited":[],"notes":{},"doneActivities":[]}');
 const save=()=>localStorage.setItem('japanLiteLocal',JSON.stringify(state));
