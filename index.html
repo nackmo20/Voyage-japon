@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- FICHIER COPIABLE DEPUIS CODEX CLOUD : ce fichier est volontairement formaté en lignes courtes, sans build ni dépendance. Copier tout index.html suffit. -->
 <html lang="fr">
 <head>
   <meta charset="utf-8">
@@ -226,9 +227,6 @@ nav button.active {
 </head>
 <body>
   <script>
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Japon 2026 Lite</title><style>
-:root{--red:#bc002d;--navy:#10233f;--ink:#172033;--muted:#647084;--bg:#f7f3ed;--card:#fffefa;--line:#e7ded2;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 4%,#bc002d18 0 70px,transparent 72px),var(--bg)}.app{max-width:980px;margin:auto;min-height:100vh;padding-bottom:88px}header{background:linear-gradient(135deg,var(--navy),#19395f);color:white;padding:22px 18px;border-radius:0 0 28px 28px}h1,h2,h3{margin:.2rem 0}p{line-height:1.45}.eyebrow,.muted{color:var(--muted);font-size:.86rem}.hero small{color:#ffd6df;letter-spacing:.1em}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card,.filter,.day,.restaurant{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 8px 24px #10233f0d}.stat b{display:block;font-size:1.5rem;color:var(--red)}main{padding:16px}.section{display:none}.section.active{display:block}.filters{display:grid;gap:10px;margin:12px 0}.filters select,.filters input,.filters button,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:white;font:inherit}.cards{display:grid;gap:12px}.badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.badge{background:#f1e8dc;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:.78rem}.warn{background:#fff1c2;color:#6f4b00}.ok{background:#e9f7ef;color:#17603a}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button,.link,.reset{border:0;border-radius:12px;background:var(--navy);color:white;padding:10px 12px;text-decoration:none;font:inherit}.ghost{background:#f2f4f8!important;color:var(--navy)!important}.fav.on{background:var(--red);color:white}.tabs{display:flex;gap:8px;overflow:auto;margin:12px 0}.tabs button{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;white-space:nowrap}.tabs button.active{background:var(--navy);color:white}.budgetbar{height:14px;background:#eadfd4;border-radius:999px;overflow:hidden}.budgetbar i{display:block;height:100%;background:var(--red)}nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(980px,100%);height:72px;background:white;border-top:1px solid var(--line);display:flex;z-index:3}nav button{flex:1;border:0;background:white;color:var(--muted);font-size:.75rem}nav button.active{color:var(--red);font-weight:700}.count{font-weight:700;color:var(--red)}@media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}.filters{grid-template-columns:repeat(5,1fr)}.cards{grid-template-columns:repeat(2,1fr)}header{margin-top:12px;border-radius:28px}}
-</style></head><body><script>
 // ===== DÉBUT DES DONNÉES GÉNÉRÉES =====
 const APP_SEED_DATA = {
   "metadata": {
@@ -1656,8 +1654,12 @@ function tog(key, id) {
   renderRestaurants();
 }
 
+function getCopyableHtml() {
+  return '<!doctype html>\n' + HTML_SOURCE;
+}
+
 function copyHtmlFile() {
-  const text = '<!doctype html>\n' + HTML_SOURCE;
+  const text = getCopyableHtml();
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard
@@ -1668,6 +1670,14 @@ function copyHtmlFile() {
   }
 
   fallbackCopy(text);
+}
+
+function showHtmlSourceBox() {
+  const box = $('#copySourceBox');
+  box.classList.remove('hidden');
+  box.value = getCopyableHtml();
+  box.focus();
+  box.select();
 }
 
 function fallbackCopy(text) {
@@ -1838,7 +1848,11 @@ function renderMore() {
     ${renderDailyBudget()}
     <h3>Tâches</h3>
     <div class="cards">${APP_SEED_DATA.tasks.map(taskCard).join('')}</div>
-    <div class="actions"><button class="ghost" onclick="copyHtmlFile()">Copier le fichier index.html</button></div>
+    <div class="actions">
+      <button class="ghost" onclick="copyHtmlFile()">Copier le fichier index.html</button>
+      <button class="ghost" onclick="showHtmlSourceBox()">Afficher le fichier à copier-coller</button>
+    </div>
+    <textarea id="copySourceBox" class="hidden" rows="14" aria-label="Code complet de index.html à copier-coller"></textarea>
     <button id="reset" class="reset">Réinitialiser mes données locales</button>
   `;
 }
@@ -1905,23 +1919,3 @@ init();
   </script>
 </body>
 </html>
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const state=JSON.parse(localStorage.getItem('japanLiteLocal')||'{"favorites":[],"visited":[],"notes":{},"doneActivities":[]}');
-const save=()=>localStorage.setItem('japanLiteLocal',JSON.stringify(state));
-const fmt=n=>(n==null?'—':new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n));
-const jpy=n=>n?new Intl.NumberFormat('fr-FR').format(n)+' ¥':'—';
-function opt(id,vals,label){$('#'+id).innerHTML='<option value="">'+label+'</option>'+[...new Set(vals.filter(Boolean))].sort().map(v=>`<option>${v}</option>`).join('')}
-function show(sec){$$('.section').forEach(x=>x.classList.toggle('active',x.id===sec));$$('nav button').forEach(b=>b.classList.toggle('active',b.dataset.sec===sec));localStorage.setItem('japanLitePrefs',sec)}
-function badges(arr){return '<div class="badges">'+arr.filter(Boolean).map(x=>`<span class="badge">${x}</span>`).join('')+'</div>'}
-function init(){const d=APP_SEED_DATA,m=d.metadata; $('#home').innerHTML=`<div class="hero"><small>JAPON 2026</small><h2>Version Lite</h2><p>${m.tripStart} → ${m.tripEnd} · ${m.days} jours</p></div><div class="grid"><div class="card stat"><span>Budget</span><b>${fmt(m.budgetInitial)}</b></div><div class="card stat"><span>Payé</span><b>${fmt(m.totalPaid)}</b></div><div class="card stat"><span>Reste</span><b>${fmt(m.budgetRemaining)}</b></div><div class="card stat"><span>Activités</span><b>${d.activities.length}</b></div></div><h3>Alertes tarifs</h3>${badges(m.dataWarnings.map(x=>x+' · Tarif à confirmer'))}<h3>Prochain événement</h3><div class="card">${(d.planning[0]||{activities:'À compléter'}).activities}</div><h3>Prochaines tâches</h3><div class="cards">${d.tasks.slice(0,4).map(taskCard).join('')}</div>`;
- renderProgram(); renderActivities(); renderRestaurants(); renderMore(); opt('actArea',d.activities.map(a=>a.area),'Quartier'); opt('actStatus',d.activities.map(a=>a.status),'Statut'); opt('actPriority',d.activities.map(a=>a.priority),'Priorité'); opt('actDecision',d.activities.map(a=>a.commonDecision),'Décision'); opt('actResa',d.activities.map(a=>a.reservation),'Réservation'); opt('restCat',d.restaurants.flatMap(r=>r.categories||[r.category]),'Catégorie'); opt('restArea',d.restaurants.map(r=>r.area),'Quartier'); $$('.filters select,.filters input').forEach(e=>e.addEventListener('input',()=>{renderActivities();renderRestaurants()})); $('#reset').onclick=()=>{if(confirm('Réinitialiser mes données locales ?')){localStorage.removeItem('japanLiteLocal');location.reload()}}; show(localStorage.getItem('japanLitePrefs')||'home');}
-function renderProgram(){let d=APP_SEED_DATA.planning; $('#program').innerHTML='<h2>Programme</h2><div class="tabs">'+d.map((p,i)=>`<button class="${i?'':'active'}" onclick="selDate('${p.date}',this)">${p.date}</button>`).join('')+'</div><div id="days"></div>'; selDate(d[0]?.date)}
-function selDate(date,btn){if(btn){$$('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')} const items=APP_SEED_DATA.planning.filter(p=>!date||p.date===date); $('#days').innerHTML=items.map(p=>`<article class="day"><h3>${p.date} · ${p.area}</h3>${badges([p.time,p.status,p.reservation])}<p>${p.activities}</p><p><b>Prix :</b> ${p.price}<br><b>Notes :</b> ${p.notes}</p></article>`).join('')||'<p>Journée à compléter.</p>'}
-function renderActivities(){let a=APP_SEED_DATA.activities.filter(x=>(!$('#actArea')||!$('#actArea').value||x.area===$('#actArea').value)&&(!$('#actStatus').value||x.status===$('#actStatus').value)&&(!$('#actPriority').value||x.priority===$('#actPriority').value)&&(!$('#actDecision').value||x.commonDecision===$('#actDecision').value)&&(!$('#actResa').value||x.reservation===$('#actResa').value)); $('#actList').innerHTML=a.map(x=>`<article class="card"><h3>${x.name}</h3>${badges([x.area,x.status,x.priority,x.commonDecision,x.reservation,x.priceWarning?'Tarif à confirmer':''])}<p>${x.description||''}</p><p><b>Prix :</b> ${fmt(x.priceEur)}<br><b>Matteo :</b> ${x.matteoOpinion}<br><b>Conjointe :</b> ${x.partnerOpinion}<br><b>Notes :</b> ${x.notes||'—'}</p><button class="ghost" onclick="toggleDone('${x.id}')">${state.doneActivities.includes(x.id)?'Terminée':'Marquer terminée'}</button></article>`).join(''); $('#actCount').textContent=a.length}
-function toggleDone(id){state.doneActivities=state.doneActivities.includes(id)?state.doneActivities.filter(x=>x!==id):[...state.doneActivities,id];save();renderActivities()}
-function renderRestaurants(){let min=Number($('#restMin').value||0), fav=$('#restFav').value; let r=APP_SEED_DATA.restaurants.filter(x=>(!$('#restCat').value||(x.categories||[x.category]).includes($('#restCat').value))&&(!$('#restArea').value||x.area===$('#restArea').value)&&(!min||x.rating>=min)&&(!fav||(fav==='favoris'?state.favorites.includes(x.id):state.visited.includes(x.id)))&&(!$('#restPrice').value||((x.estimatedPriceJpy||0)<=Number($('#restPrice').value)))); $('#restCount').textContent=r.length; $('#restList').innerHTML=r.map(x=>`<article class="restaurant"><h3>${x.nameJa}</h3><p class="muted">${x.nameRomaji}</p>${badges([...(x.categories||[x.category]),x.area,x.nearestStation,'★ '+x.rating+' ('+x.reviewCount+')'])}<p><b>Prix :</b> midi ${x.lunchPrice||'—'} · soir ${x.dinnerPrice||'—'} · estimé ${jpy(x.estimatedPriceJpy)}</p><p><b>Spécialité :</b> ${x.specialty||'—'}<br>${x.description}</p><div class="actions"><button class="fav ${state.favorites.includes(x.id)?'on':''}" onclick="tog('favorites','${x.id}')">♥ Favori</button><button class="ghost" onclick="tog('visited','${x.id}')">${state.visited.includes(x.id)?'Visité':'À visiter'}</button><a class="link" href="${x.tabelogUrl}" target="_blank">Tabelog</a>${x.reservationUrl?`<a class="link" href="${x.reservationUrl}" target="_blank">Réserver</a>`:''}</div><textarea placeholder="Note personnelle" oninput="state.notes['${x.id}']=this.value;save()">${state.notes[x.id]||''}</textarea></article>`).join('')}
-function tog(k,id){state[k]=state[k].includes(id)?state[k].filter(x=>x!==id):[...state[k],id];save();renderRestaurants()}
-function taskCard(t){return `<article class="card">${badges([t.priority,t.owner,t.status])}<h3>${t.title}</h3><p>Échéance : ${t.dueDate}</p></article>`}
-function renderMore(){let m=APP_SEED_DATA.metadata, paid=m.totalPaid/m.budgetInitial*100; $('#more').innerHTML=`<h2>Budget et tâches</h2><div class="card"><p>Cagnotte initiale : <b>${fmt(m.budgetInitial)}</b><br>Dépenses payées : <b>${fmt(m.totalPaid)}</b><br>Reste disponible : <b>${fmt(m.budgetRemaining)}</b></p><div class="budgetbar"><i style="width:${paid}%"></i></div></div><h3>Dépenses</h3><div class="cards">${APP_SEED_DATA.budget.map(b=>`<article class="card"><h3>${b.label}</h3>${badges(['Réservation '+b.reserved])}<p>Payé : ${fmt(b.paid)} · Reste après paiement : ${fmt(b.remainingAfter)}</p></article>`).join('')}</div><h3>Tâches</h3><div class="cards">${APP_SEED_DATA.tasks.map(taskCard).join('')}</div><button id="reset" class="reset">Réinitialiser mes données locales</button>`}
-document.body.innerHTML=`<div class="app"><header><small>日本 · voyage validé ergonomie</small><h1>Notre voyage au Japon</h1><p>Application Lite autonome, données intégrées.</p></header><main><section id="home" class="section"></section><section id="program" class="section"></section><section id="activities" class="section"><h2>Activités <span id="actCount" class="count"></span></h2><div class="filters"><select id="actArea"></select><select id="actStatus"></select><select id="actPriority"></select><select id="actDecision"></select><select id="actResa"></select></div><div id="actList" class="cards"></div></section><section id="restaurants" class="section"><h2>Restaurants <span id="restCount" class="count"></span></h2><div class="filters"><select id="restCat"></select><select id="restArea"></select><select id="restFav"><option value="">Favori/visité</option><option value="favoris">Favoris</option><option value="visited">Visités</option></select><select id="restPrice"><option value="">Prix max</option><option value="2000">≤ 2 000 ¥</option><option value="8000">≤ 8 000 ¥</option><option value="15000">≤ 15 000 ¥</option><option value="25000">≤ 25 000 ¥</option></select><input id="restMin" type="number" min="0" max="5" step="0.1" placeholder="Note min"></div><div id="restList" class="cards"></div></section><section id="more" class="section"></section></main><nav>${[['home','Accueil'],['program','Programme'],['activities','Activités'],['restaurants','Restaurants'],['more','Plus']].map(x=>`<button data-sec="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('')}</nav></div>`;init();
-</script></body></html>
