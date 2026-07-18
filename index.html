@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- FICHIER COPIABLE DEPUIS CODEX CLOUD : ce fichier est volontairement formaté en lignes courtes, sans build ni dépendance. Copier tout index.html suffit. -->
+<!-- FICHIER UNIQUE À MODIFIER : /index.html. Version autonome, copiable depuis Codex Cloud, sans build ni dépendance. Copier tout index.html suffit. -->
 <html lang="fr">
 <head>
   <meta charset="utf-8">
@@ -80,6 +80,7 @@ p { line-height: 1.45; }
 main { padding: 16px; }
 .section { display: none; }
 .section.active { display: block; }
+.hidden { display: none; }
 
 .filters {
   display: grid;
@@ -223,6 +224,30 @@ nav button.active {
     border-radius: 28px;
   }
 }
+
+/* Planning interactif, géographie et budget flexible */
+.tool-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.tool-row > * { flex: 1 1 150px; }
+.slot-grid { display: grid; gap: 12px; }
+.slot { border: 1px dashed #cbbfaf; border-radius: 18px; padding: 12px; background: #fffaf2; min-height: 120px; }
+.slot.drag-over { outline: 3px solid #bc002d55; }
+.schedule-item { border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin: 8px 0; background: white; }
+.schedule-item.done { opacity: .72; border-color: #8ac7a0; }
+.inline-form { display: grid; gap: 8px; margin-top: 10px; }
+.inline-form select,
+.inline-form input,
+.inline-form textarea,
+.tool-row select,
+.tool-row input,
+.tool-row button { padding: 10px; border: 1px solid var(--line); border-radius: 12px; font: inherit; background: white; }
+.area-grid { display: grid; gap: 8px; margin-top: 10px; }
+.budgetbar.warn i { background: #d58a00; }
+.budgetbar.over i { background: var(--red); }
+.over-text { color: var(--red); font-weight: 700; }
+.source-picker { max-height: 220px; overflow: auto; }
+.source-picker button { width: 100%; text-align: left; margin: 4px 0; }
+@media (min-width: 760px) { .slot-grid { grid-template-columns: repeat(5, 1fr); } .area-grid { grid-template-columns: 1fr 1fr auto; } }
+
   </style>
 </head>
 <body>
@@ -1428,286 +1453,515 @@ const APP_SEED_DATA = {
 };
 // ===== FIN DES DONNÉES GÉNÉRÉES =====
 
+
+// État local et migration
 const HTML_SOURCE = document.documentElement.outerHTML;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
+const SLOTS = [
+  ['morning', 'Matin'],
+  ['lunch', 'Déjeuner'],
+  ['afternoon', 'Après-midi'],
+  ['dinner', 'Dîner'],
+  ['evening', 'Soirée']
+];
+const SLOT_LABELS = Object.fromEntries(SLOTS);
 
-const state = JSON.parse(
-  localStorage.getItem('japanLiteLocal') ||
-    '{"favorites":[],"visited":[],"notes":{},"doneActivities":[],"dailyExpenses":[]}'
-);
-state.dailyExpenses = state.dailyExpenses || [];
+function defaultState() {
+  return {
+    version: 2,
+    favorites: [],
+    visited: [],
+    notes: {},
+    doneActivities: [],
+    dailyExpenses: [],
+    scheduleItems: [],
+    scheduleMigrated: false,
+    areaOverrides: {},
+    budgetSettings: {
+      globalBudget: APP_SEED_DATA.metadata.budgetInitial,
+      alreadyPaid: APP_SEED_DATA.metadata.totalPaid
+    }
+  };
+}
 
-const save = () => localStorage.setItem('japanLiteLocal', JSON.stringify(state));
-const fmt = (value) => value == null ? '—' : new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
-const jpy = (value) => value ? new Intl.NumberFormat('fr-FR').format(value) + ' ¥' : '—';
+function migrateState(rawState) {
+  const defaults = defaultState();
+  const migrated = { ...defaults, ...(rawState || {}) };
+  migrated.favorites = Array.isArray(migrated.favorites) ? migrated.favorites : [];
+  migrated.visited = Array.isArray(migrated.visited) ? migrated.visited : [];
+  migrated.notes = migrated.notes && typeof migrated.notes === 'object' ? migrated.notes : {};
+  migrated.doneActivities = Array.isArray(migrated.doneActivities) ? migrated.doneActivities : [];
+  migrated.dailyExpenses = Array.isArray(migrated.dailyExpenses) ? migrated.dailyExpenses : [];
+  migrated.scheduleItems = Array.isArray(migrated.scheduleItems) ? migrated.scheduleItems : [];
+  migrated.areaOverrides = migrated.areaOverrides && typeof migrated.areaOverrides === 'object' ? migrated.areaOverrides : {};
+  migrated.budgetSettings = {
+    globalBudget: Number(migrated.budgetSettings?.globalBudget ?? APP_SEED_DATA.metadata.budgetInitial),
+    alreadyPaid: Number(migrated.budgetSettings?.alreadyPaid ?? APP_SEED_DATA.metadata.totalPaid)
+  };
+
+  if (!migrated.scheduleMigrated) {
+    migrated.scheduleItems = [
+      ...migrated.scheduleItems,
+      ...APP_SEED_DATA.planning.map((item, index) => ({
+        id: 'schedule-seed-' + (item.id || index),
+        sourceType: 'free',
+        sourceId: item.id || '',
+        fallbackLabel: item.activities || item.area || 'Élément importé',
+        fallbackArea: item.area || '',
+        date: item.date,
+        slot: seedSlot(item),
+        time: item.time && item.time !== 'Journée' ? item.time : '',
+        note: [item.notes, item.price, item.reservation].filter(Boolean).join(' · '),
+        completed: false,
+        order: index
+      }))
+    ];
+    migrated.scheduleMigrated = true;
+  }
+
+  migrated.version = 2;
+  return migrated;
+}
+
+let state = migrateState(JSON.parse(localStorage.getItem('japanLiteLocal') || 'null'));
+let selectedDate = tripDates()[0];
+let draggedScheduleId = '';
+let selectedSource = null;
+
+function save() {
+  localStorage.setItem('japanLiteLocal', JSON.stringify(state));
+}
+save();
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
+}
+
+const fmt = (value) => value == null ? '—' : new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(Number(value));
+const jpy = (value) => value == null ? '—' : new Intl.NumberFormat('fr-FR').format(Number(value)) + ' ¥';
+const sourceKey = (type, id) => type + ':' + id;
+const domKey = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, '_');
+const sourceMaps = () => ({
+  activity: Object.fromEntries(APP_SEED_DATA.activities.map((item) => [item.id, item])),
+  restaurant: Object.fromEntries(APP_SEED_DATA.restaurants.map((item) => [item.id, item]))
+});
 
 function opt(id, values, label) {
-  $('#' + id).innerHTML = '<option value="">' + label + '</option>' +
-    [...new Set(values.filter(Boolean))]
-      .sort()
-      .map((value) => `<option>${value}</option>`)
-      .join('');
+  const element = $('#' + id);
+  if (!element) return;
+  element.innerHTML = '<option value="">' + esc(label) + '</option>' +
+    [...new Set(values.filter(Boolean))].sort().map((value) => `<option>${esc(value)}</option>`).join('');
 }
 
 function show(sectionId) {
   $$('.section').forEach((section) => section.classList.toggle('active', section.id === sectionId));
   $$('nav button').forEach((button) => button.classList.toggle('active', button.dataset.sec === sectionId));
   localStorage.setItem('japanLitePrefs', sectionId);
+  if (sectionId === 'home') renderHome();
+  if (sectionId === 'program') renderProgram();
+  if (sectionId === 'more') renderMore();
 }
 
 function badges(items) {
-  return '<div class="badges">' +
-    items
-      .filter(Boolean)
-      .map((item) => `<span class="badge">${item}</span>`)
-      .join('') +
-    '</div>';
+  return '<div class="badges">' + items.filter(Boolean).map((item) => `<span class="badge">${esc(item)}</span>`).join('') + '</div>';
 }
 
-function taskCard(task) {
-  return `
-    <article class="card">
-      ${badges([task.priority, task.owner, task.status])}
-      <h3>${task.title}</h3>
-      <p>Échéance : ${task.dueDate}</p>
-    </article>
-  `;
+// Gestion géographique
+const TOURIST_ZONES = {
+  'Centre de Tokyo': ['Tokyo Station', 'Marunouchi', 'Ginza', 'Kanda', 'Jimbocho', 'Hongo', 'Bunkyo'],
+  'Est de Tokyo': ['Tsukiji', 'Akihabara', 'Asakusa', 'Kuramae', 'Kiyosumi-Shirakawa'],
+  'Nord de Tokyo': ['Ueno', 'Ikebukuro'],
+  'Ouest de Tokyo': ['Shinjuku', 'Shibuya', 'Harajuku', 'Omotesando', 'Koenji', 'Ogikubo', 'Nakano'],
+  'Sud de Tokyo': ['Ebisu', 'Roppongi', 'Odaiba'],
+  'Tokyo périphérique': [],
+  'Excursions': ['Nikko', 'Hakone'],
+  'À classer': ['À classer']
+};
+const AREA_ALIASES = {
+  'Tokyo Station': ['tokyo station', 'tokyo sta', 'gare de tokyo', '東京駅'],
+  Marunouchi: ['marunouchi', '丸の内'],
+  Ginza: ['ginza', '東銀座', 'higashi ginza'],
+  Tsukiji: ['tsukiji', '築地'],
+  Akihabara: ['akihabara', '秋葉原'],
+  Kanda: ['kanda', '神田'],
+  Jimbocho: ['jimbocho', 'jinbocho', '神保町'],
+  Ueno: ['ueno', '上野'],
+  Asakusa: ['asakusa', '浅草'],
+  Kuramae: ['kuramae', '蔵前'],
+  'Kiyosumi-Shirakawa': ['kiyosumi', 'shirakawa', '清澄白河'],
+  Hongo: ['hongo', '本郷'],
+  Bunkyo: ['bunkyo', '文京'],
+  Ikebukuro: ['ikebukuro', '池袋'],
+  Shinjuku: ['shinjuku', 'nishi shinjuku', 'shinjuku gyoen', 'shinjuku gyoemmae', '新宿'],
+  Shibuya: ['shibuya', '渋谷'],
+  Harajuku: ['harajuku', '原宿', 'takeshita'],
+  Omotesando: ['omotesando', '表参道'],
+  Ebisu: ['ebisu', '恵比寿'],
+  Roppongi: ['roppongi', '六本木', 'azabudai', '麻布台'],
+  Odaiba: ['odaiba', '台場', 'daiba'],
+  Koenji: ['koenji', '高円寺'],
+  Ogikubo: ['ogikubo', '荻窪'],
+  Nakano: ['nakano', '中野'],
+  Nikko: ['nikko', '日光'],
+  Hakone: ['hakone', '箱根']
+};
+
+function normalizeText(value) {
+  return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\s_‐‑‒–—-]+/g, ' ').trim();
 }
 
-function init() {
-  const data = APP_SEED_DATA;
-  const metadata = data.metadata;
+function getField(item, camel, snake) {
+  return item?.[camel] ?? item?.[snake] ?? '';
+}
 
-  $('#home').innerHTML = `
-    <div class="hero">
-      <small>JAPON 2026</small>
-      <h2>Version Lite</h2>
-      <p>${metadata.tripStart} → ${metadata.tripEnd} · ${metadata.days} jours</p>
-    </div>
-    <div class="grid">
-      <div class="card stat"><span>Budget</span><b>${fmt(metadata.budgetInitial)}</b></div>
-      <div class="card stat"><span>Payé</span><b>${fmt(metadata.totalPaid)}</b></div>
-      <div class="card stat"><span>Reste</span><b>${fmt(metadata.budgetRemaining)}</b></div>
-      <div class="card stat"><span>Activités</span><b>${data.activities.length}</b></div>
-    </div>
-    <h3>Alertes tarifs</h3>
-    ${badges(metadata.dataWarnings.map((warning) => warning + ' · Tarif à confirmer'))}
-    <h3>Prochain événement</h3>
-    <div class="card">${(data.planning[0] || { activities: 'À compléter' }).activities}</div>
-    <h3>Prochaines tâches</h3>
-    <div class="cards">${data.tasks.slice(0, 4).map(taskCard).join('')}</div>
-  `;
+function getRestaurantStation(restaurant) { return getField(restaurant, 'nearestStation', 'nearest_station'); }
+function getCityOrWard(item) { return getField(item, 'cityOrWard', 'city_or_ward'); }
+function getExactArea(item) { return getField(item, 'neighborhood', 'neighborhood') || getField(item, 'exactArea', 'exact_area'); }
+function getAddress(item) { return item?.address || ''; }
 
-  renderProgram();
-  renderActivities();
-  renderRestaurants();
-  renderMore();
+function zoneForDisplayArea(displayArea) {
+  return Object.entries(TOURIST_ZONES).find(([, areas]) => areas.includes(displayArea))?.[0] || 'À classer';
+}
 
-  opt('actArea', data.activities.map((activity) => activity.area), 'Quartier');
-  opt('actStatus', data.activities.map((activity) => activity.status), 'Statut');
-  opt('actPriority', data.activities.map((activity) => activity.priority), 'Priorité');
-  opt('actDecision', data.activities.map((activity) => activity.commonDecision), 'Décision');
-  opt('actResa', data.activities.map((activity) => activity.reservation), 'Réservation');
-  opt('restCat', data.restaurants.flatMap((restaurant) => restaurant.categories || [restaurant.category]), 'Catégorie');
-  opt('restArea', data.restaurants.map((restaurant) => restaurant.area), 'Quartier');
+function matchKnownArea(...parts) {
+  const text = normalizeText(parts.filter(Boolean).join(' '));
+  if (!text) return '';
+  for (const [area, aliases] of Object.entries(AREA_ALIASES)) {
+    if ([area, ...aliases].some((alias) => text.includes(normalizeText(alias)))) return area;
+  }
+  return '';
+}
 
-  $$('.filters select,.filters input').forEach((input) => {
-    input.addEventListener('input', () => {
-      renderActivities();
-      renderRestaurants();
-    });
-  });
+function resolveGeographicArea(item, type = item?.sourceType || 'activity') {
+  const id = item?.id || item?.sourceId || '';
+  const override = state.areaOverrides[sourceKey(type, id)] || state.areaOverrides[id];
+  if (override) {
+    return { zone: override.zone, displayArea: override.displayArea, exactArea: '', nearestStation: '', cityOrWard: '', address: '', overridden: true };
+  }
 
-  $('#reset').onclick = () => {
-    if (confirm('Réinitialiser mes données locales ?')) {
-      localStorage.removeItem('japanLiteLocal');
-      location.reload();
-    }
+  const station = type === 'restaurant' ? getRestaurantStation(item) : '';
+  const exactArea = getExactArea(item);
+  const cityOrWard = getCityOrWard(item);
+  const address = getAddress(item);
+  const displayArea = matchKnownArea(item?.area, station, exactArea, cityOrWard, address) || 'À classer';
+  return {
+    zone: zoneForDisplayArea(displayArea),
+    displayArea,
+    exactArea,
+    nearestStation: station,
+    cityOrWard,
+    address,
+    overridden: false
   };
-
-  show(localStorage.getItem('japanLitePrefs') || 'home');
 }
 
-function renderProgram() {
-  const planning = APP_SEED_DATA.planning;
-  $('#program').innerHTML = `
-    <h2>Programme</h2>
-    <div class="tabs">
-      ${planning.map((item, index) => `
-        <button class="${index ? '' : 'active'}" onclick="selDate('${item.date}', this)">${item.date}</button>
-      `).join('')}
-    </div>
-    <div id="days"></div>
+function zoneOptions(selected = '') {
+  return Object.keys(TOURIST_ZONES).map((zone) => `<option ${zone === selected ? 'selected' : ''}>${esc(zone)}</option>`).join('');
+}
+
+function areaOptions(zone, selected = '') {
+  return (TOURIST_ZONES[zone] || ['À classer']).map((area) => `<option ${area === selected ? 'selected' : ''}>${esc(area)}</option>`).join('');
+}
+
+function correctionForm(type, item) {
+  const geo = resolveGeographicArea(item, type);
+  const key = sourceKey(type, item.id);
+  const dom = domKey(key);
+  return `
+    <details class="area-grid">
+      <summary>Corriger le quartier</summary>
+      <label>Zone touristique
+        <select id="zone-${esc(dom)}" onchange="refreshAreaSelect('${esc(dom)}')">${zoneOptions(geo.zone)}</select>
+      </label>
+      <label>Quartier principal
+        <select id="area-${esc(dom)}">${areaOptions(geo.zone, geo.displayArea)}</select>
+      </label>
+      <button class="ghost" onclick="saveAreaOverride('${esc(type)}','${esc(item.id)}','${esc(dom)}')">Enregistrer</button>
+      <button class="ghost" onclick="clearAreaOverride('${esc(type)}','${esc(item.id)}')">Classement automatique</button>
+    </details>
   `;
-  selDate(planning[0]?.date);
 }
 
-function selDate(date, button) {
-  if (button) {
-    $$('.tabs button').forEach((tab) => tab.classList.remove('active'));
-    button.classList.add('active');
-  }
-
-  const items = APP_SEED_DATA.planning.filter((item) => !date || item.date === date);
-  $('#days').innerHTML = items.map((item) => `
-    <article class="day">
-      <h3>${item.date} · ${item.area}</h3>
-      ${badges([item.time, item.status, item.reservation])}
-      <p>${item.activities}</p>
-      <p><b>Prix :</b> ${item.price}<br><b>Notes :</b> ${item.notes}</p>
-    </article>
-  `).join('') || '<p>Journée à compléter.</p>';
+function refreshAreaSelect(dom) {
+  const zone = $('#zone-' + dom).value;
+  $('#area-' + dom).innerHTML = areaOptions(zone, TOURIST_ZONES[zone]?.[0] || 'À classer');
 }
 
-function renderActivities() {
-  const activities = APP_SEED_DATA.activities.filter((activity) =>
-    (!$('#actArea') || !$('#actArea').value || activity.area === $('#actArea').value) &&
-    (!$('#actStatus').value || activity.status === $('#actStatus').value) &&
-    (!$('#actPriority').value || activity.priority === $('#actPriority').value) &&
-    (!$('#actDecision').value || activity.commonDecision === $('#actDecision').value) &&
-    (!$('#actResa').value || activity.reservation === $('#actResa').value)
-  );
-
-  $('#actList').innerHTML = activities.map((activity) => `
-    <article class="card">
-      <h3>${activity.name}</h3>
-      ${badges([
-        activity.area,
-        activity.status,
-        activity.priority,
-        activity.commonDecision,
-        activity.reservation,
-        activity.priceWarning ? 'Tarif à confirmer' : ''
-      ])}
-      <p>${activity.description || ''}</p>
-      <p>
-        <b>Prix :</b> ${fmt(activity.priceEur)}<br>
-        <b>Matteo :</b> ${activity.matteoOpinion}<br>
-        <b>Conjointe :</b> ${activity.partnerOpinion}<br>
-        <b>Notes :</b> ${activity.notes || '—'}
-      </p>
-      <button class="ghost" onclick="toggleDone('${activity.id}')">
-        ${state.doneActivities.includes(activity.id) ? 'Terminée' : 'Marquer terminée'}
-      </button>
-    </article>
-  `).join('');
-
-  $('#actCount').textContent = activities.length;
-}
-
-function toggleDone(id) {
-  state.doneActivities = state.doneActivities.includes(id)
-    ? state.doneActivities.filter((item) => item !== id)
-    : [...state.doneActivities, id];
+function saveAreaOverride(type, id, dom = domKey(sourceKey(type, id))) {
+  const key = sourceKey(type, id);
+  state.areaOverrides[key] = { zone: $('#zone-' + dom).value, displayArea: $('#area-' + dom).value };
   save();
   renderActivities();
-}
-
-function renderRestaurants() {
-  const minRating = Number($('#restMin').value || 0);
-  const favoriteFilter = $('#restFav').value;
-
-  const restaurants = APP_SEED_DATA.restaurants.filter((restaurant) =>
-    (!$('#restCat').value || (restaurant.categories || [restaurant.category]).includes($('#restCat').value)) &&
-    (!$('#restArea').value || restaurant.area === $('#restArea').value) &&
-    (!minRating || restaurant.rating >= minRating) &&
-    (!favoriteFilter || (favoriteFilter === 'favoris'
-      ? state.favorites.includes(restaurant.id)
-      : state.visited.includes(restaurant.id))) &&
-    (!$('#restPrice').value || ((restaurant.estimatedPriceJpy || 0) <= Number($('#restPrice').value)))
-  );
-
-  $('#restCount').textContent = restaurants.length;
-  $('#restList').innerHTML = restaurants.map((restaurant) => `
-    <article class="restaurant">
-      <h3>${restaurant.nameJa}</h3>
-      <p class="muted">${restaurant.nameRomaji}</p>
-      ${badges([
-        ...(restaurant.categories || [restaurant.category]),
-        restaurant.area,
-        restaurant.nearestStation,
-        '★ ' + restaurant.rating + ' (' + restaurant.reviewCount + ')'
-      ])}
-      <p>
-        <b>Prix :</b> midi ${restaurant.lunchPrice || '—'} ·
-        soir ${restaurant.dinnerPrice || '—'} ·
-        estimé ${jpy(restaurant.estimatedPriceJpy)}
-      </p>
-      <p><b>Spécialité :</b> ${restaurant.specialty || '—'}<br>${restaurant.description}</p>
-      <div class="actions">
-        <button class="fav ${state.favorites.includes(restaurant.id) ? 'on' : ''}" onclick="tog('favorites', '${restaurant.id}')">♥ Favori</button>
-        <button class="ghost" onclick="tog('visited', '${restaurant.id}')">${state.visited.includes(restaurant.id) ? 'Visité' : 'À visiter'}</button>
-        <a class="link" href="${restaurant.tabelogUrl}" target="_blank">Tabelog</a>
-        ${restaurant.reservationUrl ? `<a class="link" href="${restaurant.reservationUrl}" target="_blank">Réserver</a>` : ''}
-      </div>
-      <textarea placeholder="Note personnelle" oninput="state.notes['${restaurant.id}'] = this.value; save()">${state.notes[restaurant.id] || ''}</textarea>
-    </article>
-  `).join('');
-}
-
-function tog(key, id) {
-  state[key] = state[key].includes(id)
-    ? state[key].filter((item) => item !== id)
-    : [...state[key], id];
-  save();
   renderRestaurants();
+  renderProgram();
 }
 
-function getCopyableHtml() {
-  return '<!doctype html>\n' + HTML_SOURCE;
+function clearAreaOverride(type, id) {
+  delete state.areaOverrides[sourceKey(type, id)];
+  delete state.areaOverrides[id];
+  save();
+  renderActivities();
+  renderRestaurants();
+  renderProgram();
 }
 
-function copyHtmlFile() {
-  const text = getCopyableHtml();
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => alert('Fichier index.html copié : vous pouvez le coller dans un fichier vierge.'))
-      .catch(() => fallbackCopy(text));
-    return;
-  }
-
-  fallbackCopy(text);
+function populateGeoFilters() {
+  opt('actZone', Object.keys(TOURIST_ZONES), 'Zone');
+  opt('restZone', Object.keys(TOURIST_ZONES), 'Zone');
+  refreshGeoAreaFilter('activity');
+  refreshGeoAreaFilter('restaurant');
 }
 
-function showHtmlSourceBox() {
-  const box = $('#copySourceBox');
-  box.classList.remove('hidden');
-  box.value = getCopyableHtml();
-  box.focus();
-  box.select();
+function refreshGeoAreaFilter(type) {
+  const zoneId = type === 'activity' ? 'actZone' : 'restZone';
+  const areaId = type === 'activity' ? 'actDisplayArea' : 'restDisplayArea';
+  const zone = $('#' + zoneId)?.value;
+  const areas = zone ? (TOURIST_ZONES[zone] || []) : Object.values(TOURIST_ZONES).flat();
+  opt(areaId, areas, 'Quartier principal');
 }
 
-function fallbackCopy(text) {
-  const area = document.createElement('textarea');
-  area.value = text;
-  area.style.position = 'fixed';
-  area.style.opacity = '0';
-  document.body.appendChild(area);
-  area.select();
-  document.execCommand('copy');
-  area.remove();
-  alert('Fichier index.html copié : vous pouvez le coller dans un fichier vierge.');
-}
-
+// Gestion du planning
 function tripDates() {
   const dates = [];
   const start = new Date(APP_SEED_DATA.metadata.tripStart + 'T00:00:00');
   const end = new Date(APP_SEED_DATA.metadata.tripEnd + 'T00:00:00');
-
-  for (const day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) {
-    dates.push(day.toISOString().slice(0, 10));
-  }
-
+  for (const day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) dates.push(day.toISOString().slice(0, 10));
   return dates;
 }
 
+function seedSlot(item) {
+  const text = normalizeText([item?.time, item?.activities, item?.notes].join(' '));
+  if (text.includes('diner') || text.includes('soir')) return 'dinner';
+  if (text.includes('dejeuner') || text.includes('lunch')) return 'lunch';
+  if (text.includes('14h') || text.includes('apres')) return 'afternoon';
+  return 'morning';
+}
+
+function sourceLabel(type, id, fallback = '') {
+  const maps = sourceMaps();
+  const source = maps[type]?.[id];
+  if (!source) return fallback || 'Élément supprimé';
+  return type === 'restaurant' ? (source.nameRomaji || source.nameJa) : source.name;
+}
+
+function sourceGeo(type, id, fallbackArea = '') {
+  const maps = sourceMaps();
+  const source = maps[type]?.[id];
+  if (!source) return { zone: 'À classer', displayArea: fallbackArea || 'À classer', nearestStation: '', exactArea: '' };
+  return resolveGeographicArea(source, type);
+}
+
+function scheduleForDate(date) {
+  return state.scheduleItems.filter((item) => item.date === date).sort((a, b) => (a.order || 0) - (b.order || 0));
+}
+
+function addToSchedule(type, id, prefix = '') {
+  const date = $('#' + prefix + 'Date')?.value || selectedDate;
+  const slot = $('#' + prefix + 'Slot')?.value || 'morning';
+  const time = $('#' + prefix + 'Time')?.value || '';
+  const note = $('#' + prefix + 'Note')?.value || '';
+  const item = {
+    id: 'schedule-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+    sourceType: type,
+    sourceId: id,
+    fallbackLabel: sourceLabel(type, id),
+    fallbackArea: sourceGeo(type, id).displayArea,
+    date,
+    slot,
+    time,
+    note,
+    completed: false,
+    order: nextOrder(date, slot)
+  };
+  state.scheduleItems.push(item);
+  selectedDate = date;
+  save();
+  renderProgram();
+  renderHome();
+}
+
+function addSelectedSourceToSchedule() {
+  if (!selectedSource) return alert('Choisis d’abord une activité ou un restaurant.');
+  addToSchedule(selectedSource.type, selectedSource.id, 'programAdd');
+}
+
+function nextOrder(date, slot) {
+  return Math.max(-1, ...state.scheduleItems.filter((item) => item.date === date && item.slot === slot).map((item) => Number(item.order || 0))) + 1;
+}
+
+function moveScheduleItem(id, date, slot) {
+  const item = state.scheduleItems.find((entry) => entry.id === id);
+  if (!item) return;
+  item.date = date;
+  item.slot = slot;
+  item.order = nextOrder(date, slot);
+  save();
+  selectedDate = date;
+  renderProgram();
+  renderHome();
+}
+
+function updateScheduleItem(id, field, value) {
+  const item = state.scheduleItems.find((entry) => entry.id === id);
+  if (!item) return;
+  item[field] = field === 'completed' ? Boolean(value) : value;
+  if (field === 'date') selectedDate = value;
+  save();
+  renderProgram();
+  renderHome();
+}
+
+function removeScheduleItem(id) {
+  state.scheduleItems = state.scheduleItems.filter((item) => item.id !== id);
+  save();
+  renderProgram();
+  renderHome();
+}
+
+function reorderScheduleItem(id, direction) {
+  const item = state.scheduleItems.find((entry) => entry.id === id);
+  if (!item) return;
+  const siblings = state.scheduleItems.filter((entry) => entry.date === item.date && entry.slot === item.slot).sort((a, b) => (a.order || 0) - (b.order || 0));
+  const index = siblings.findIndex((entry) => entry.id === id);
+  const other = siblings[index + direction];
+  if (!other) return;
+  [item.order, other.order] = [other.order || 0, item.order || 0];
+  save();
+  renderProgram();
+}
+
+function onDragStart(event, id) {
+  draggedScheduleId = id;
+  event.dataTransfer.setData('text/plain', id);
+}
+
+function onSlotDrop(event, date, slot) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag-over');
+  const id = event.dataTransfer.getData('text/plain') || draggedScheduleId;
+  if (id) moveScheduleItem(id, date, slot);
+}
+
+function sourceSearchResults(query) {
+  const normalized = normalizeText(query);
+  const activities = APP_SEED_DATA.activities.map((item) => ({ type: 'activity', id: item.id, label: item.name, area: resolveGeographicArea(item, 'activity').displayArea }));
+  const restaurants = APP_SEED_DATA.restaurants.map((item) => ({ type: 'restaurant', id: item.id, label: item.nameRomaji || item.nameJa, area: resolveGeographicArea(item, 'restaurant').displayArea }));
+  return [...activities, ...restaurants].filter((item) => !normalized || normalizeText(item.label + ' ' + item.area).includes(normalized)).slice(0, 20);
+}
+
+function renderSourcePicker() {
+  const query = $('#programSearch')?.value || '';
+  $('#programResults').innerHTML = sourceSearchResults(query).map((item) => `
+    <button class="ghost" onclick="selectSourceForProgram('${esc(item.type)}','${esc(item.id)}')">
+      ${esc(item.type === 'activity' ? 'Activité' : 'Restaurant')} · ${esc(item.label)} · ${esc(item.area)}
+    </button>
+  `).join('') || '<p class="muted">Aucun résultat.</p>';
+}
+
+function selectSourceForProgram(type, id) {
+  selectedSource = { type, id };
+  $('#selectedSourceLabel').textContent = sourceLabel(type, id);
+}
+
+function scheduleCard(item) {
+  const geo = sourceGeo(item.sourceType, item.sourceId, item.fallbackArea);
+  const dates = tripDates();
+  return `
+    <article class="schedule-item ${item.completed ? 'done' : ''}" draggable="true" ondragstart="onDragStart(event,'${esc(item.id)}')">
+      ${badges([item.sourceType === 'restaurant' ? 'Restaurant' : item.sourceType === 'activity' ? 'Activité' : 'Libre', geo.zone, geo.displayArea, geo.nearestStation, item.completed ? 'Réalisé' : 'À faire'])}
+      <h3>${esc(sourceLabel(item.sourceType, item.sourceId, item.fallbackLabel))}</h3>
+      <div class="inline-form">
+        <label>Heure <input value="${esc(item.time)}" onchange="updateScheduleItem('${esc(item.id)}','time',this.value)"></label>
+        <label>Note <textarea onchange="updateScheduleItem('${esc(item.id)}','note',this.value)">${esc(item.note)}</textarea></label>
+        <label>Date <select onchange="updateScheduleItem('${esc(item.id)}','date',this.value)">${dates.map((date) => `<option ${date === item.date ? 'selected' : ''}>${date}</option>`).join('')}</select></label>
+        <label>Créneau <select onchange="updateScheduleItem('${esc(item.id)}','slot',this.value)">${SLOTS.map(([key, label]) => `<option value="${key}" ${key === item.slot ? 'selected' : ''}>${label}</option>`).join('')}</select></label>
+      </div>
+      <p>${item.time ? '<b>' + esc(item.time) + '</b> · ' : ''}${esc(item.note || '')}</p>
+      <div class="actions">
+        <button class="ghost" onclick="updateScheduleItem('${esc(item.id)}','completed',${!item.completed})">${item.completed ? 'Marquer à faire' : 'Marquer réalisé'}</button>
+        <button class="ghost" onclick="reorderScheduleItem('${esc(item.id)}',-1)">Monter</button>
+        <button class="ghost" onclick="reorderScheduleItem('${esc(item.id)}',1)">Descendre</button>
+        <button class="ghost" onclick="removeScheduleItem('${esc(item.id)}')">Supprimer</button>
+      </div>
+    </article>
+  `;
+}
+
+function renderProgram() {
+  const dates = tripDates();
+  if (!dates.includes(selectedDate)) selectedDate = dates[0];
+  const dayItems = scheduleForDate(selectedDate);
+  const today = new Date().toISOString().slice(0, 10);
+  const todayButton = dates.includes(today) ? '<button onclick="selectedDate=\'' + today + '\';renderProgram()">Aujourd’hui</button>' : '';
+  $('#program').innerHTML = `
+    <h2>Programme interactif</h2>
+    <div class="tool-row">
+      <button onclick="selectedDate='${dates[Math.max(0, dates.indexOf(selectedDate) - 1)]}';renderProgram()">Date précédente</button>
+      <select aria-label="Date du planning" onchange="selectedDate=this.value;renderProgram()">${dates.map((date) => `<option ${date === selectedDate ? 'selected' : ''}>${date}</option>`).join('')}</select>
+      <button onclick="selectedDate='${dates[Math.min(dates.length - 1, dates.indexOf(selectedDate) + 1)]}';renderProgram()">Date suivante</button>
+      ${todayButton}
+      <button onclick="selectedDate='${selectedDate}';renderProgram()">Voir toute la journée</button>
+    </div>
+    <p><b>${dayItems.length}</b> élément(s) prévu(s) pour la journée.</p>
+    <div class="card">
+      <h3>Ajouter une activité ou un restaurant</h3>
+      <div class="tool-row">
+        <input id="programSearch" placeholder="Rechercher" oninput="renderSourcePicker()" aria-label="Recherche programme">
+        <select id="programAddDate">${dates.map((date) => `<option ${date === selectedDate ? 'selected' : ''}>${date}</option>`).join('')}</select>
+        <select id="programAddSlot">${SLOTS.map(([key, label]) => `<option value="${key}">${label}</option>`).join('')}</select>
+        <input id="programAddTime" placeholder="Heure facultative" aria-label="Heure facultative">
+        <input id="programAddNote" placeholder="Note facultative" aria-label="Note facultative">
+        <button onclick="addSelectedSourceToSchedule()">Ajouter au programme</button>
+      </div>
+      <p>Source sélectionnée : <b id="selectedSourceLabel">${selectedSource ? esc(sourceLabel(selectedSource.type, selectedSource.id)) : 'Aucune'}</b></p>
+      <div id="programResults" class="source-picker"></div>
+    </div>
+    <div class="slot-grid">
+      ${SLOTS.map(([slot, label]) => `
+        <section class="slot" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="onSlotDrop(event,'${selectedDate}','${slot}')">
+          <h3>${label}</h3>
+          ${dayItems.filter((item) => item.slot === slot).map(scheduleCard).join('') || '<p class="muted">Dépose ici ou ajoute via le formulaire.</p>'}
+        </section>
+      `).join('')}
+    </div>
+  `;
+  renderSourcePicker();
+}
+
+function nextScheduleEvent() {
+  return [...state.scheduleItems]
+    .filter((item) => !item.completed)
+    .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')))[0];
+}
+
+// Gestion du budget
 function expenseTotal(person) {
-  return state.dailyExpenses
-    .filter((expense) => !person || expense.person === person)
-    .reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
+  return state.dailyExpenses.filter((expense) => !person || expense.person === person).reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
+}
+
+function budgetSummary() {
+  const globalBudget = Number(state.budgetSettings.globalBudget || 0);
+  const alreadyPaid = Number(state.budgetSettings.alreadyPaid || 0);
+  const trackedExpenses = expenseTotal();
+  const totalSpent = alreadyPaid + trackedExpenses;
+  const remainingBudget = globalBudget - totalSpent;
+  const usedPercentage = globalBudget > 0 ? totalSpent / globalBudget * 100 : 0;
+  return { globalBudget, alreadyPaid, trackedExpenses, totalSpent, remainingBudget, usedPercentage };
+}
+
+function saveBudgetSettings() {
+  state.budgetSettings.globalBudget = Number($('#globalBudget').value || 0);
+  state.budgetSettings.alreadyPaid = Number($('#alreadyPaid').value || 0);
+  save();
+  renderMore();
+  renderHome();
 }
 
 function addExpense() {
@@ -1716,51 +1970,42 @@ function addExpense() {
   const category = $('#expenseCategory').value.trim() || 'Dépense';
   const amount = Number($('#expenseAmount').value || 0);
   const note = $('#expenseNote').value.trim();
-
-  if (!date || !person || !amount || amount < 0) {
-    alert('Merci de renseigner une date, une personne et un montant positif.');
-    return;
-  }
-
-  state.dailyExpenses.push({
-    id: 'exp-' + Date.now(),
-    date,
-    person,
-    category,
-    amount,
-    note
-  });
+  if (!date || !person || !amount || amount < 0) return alert('Merci de renseigner une date, une personne et un montant positif.');
+  state.dailyExpenses.push({ id: 'exp-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6), date, person, category, amount, note });
   save();
   renderMore();
+  renderHome();
+}
+
+function updateExpense(id) {
+  const expense = state.dailyExpenses.find((item) => item.id === id);
+  if (!expense) return;
+  expense.date = $('#exp-date-' + id).value;
+  expense.person = $('#exp-person-' + id).value;
+  expense.category = $('#exp-cat-' + id).value.trim() || 'Dépense';
+  expense.amount = Number($('#exp-amount-' + id).value || 0);
+  expense.note = $('#exp-note-' + id).value.trim();
+  save();
+  renderMore();
+  renderHome();
 }
 
 function deleteExpense(id) {
   state.dailyExpenses = state.dailyExpenses.filter((expense) => expense.id !== id);
   save();
   renderMore();
+  renderHome();
 }
 
 function exportExpensesExcel() {
   const rows = [
     ['Date', 'Personne', 'Catégorie', 'Montant EUR', 'Note'],
-    ...state.dailyExpenses.map((expense) => [
-      expense.date,
-      expense.person,
-      expense.category,
-      expense.amount,
-      expense.note || ''
-    ]),
+    ...state.dailyExpenses.map((expense) => [expense.date, expense.person, expense.category, expense.amount, expense.note || '']),
     ['TOTAL Matteo', '', '', expenseTotal('Matteo'), ''],
     ['TOTAL Serrine', '', '', expenseTotal('Serrine'), ''],
     ['TOTAL global', '', '', expenseTotal(), '']
   ];
-
-  const table = '<table>' + rows.map((row) =>
-    '<tr>' + row.map((cell) =>
-      '<td>' + String(cell).replace(/[&<>]/g, (match) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[match])) + '</td>'
-    ).join('') + '</tr>'
-  ).join('') + '</table>';
-
+  const table = '<table>' + rows.map((row) => '<tr>' + row.map((cell) => '<td>' + esc(cell) + '</td>').join('') + '</tr>').join('') + '</table>';
   const blob = new Blob(['\ufeff' + table], { type: 'application/vnd.ms-excel' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -1770,18 +2015,19 @@ function exportExpensesExcel() {
   URL.revokeObjectURL(url);
 }
 
+function renderBudgetProgress(summary) {
+  const width = Math.min(100, Math.max(0, summary.usedPercentage));
+  const stateClass = summary.usedPercentage > 100 ? 'over' : summary.usedPercentage >= 75 ? 'warn' : '';
+  return `
+    <div class="budgetbar ${stateClass}" aria-label="Budget consommé ${summary.usedPercentage.toFixed(1)}%"><i style="width:${width}%"></i></div>
+    <p class="${summary.usedPercentage > 100 ? 'over-text' : ''}">
+      ${summary.usedPercentage > 100 ? 'Budget dépassé de ' + fmt(Math.abs(summary.remainingBudget)) : 'Budget consommé : ' + summary.usedPercentage.toFixed(1) + '%'}
+    </p>
+  `;
+}
+
 function renderDailyBudget() {
   const dates = tripDates();
-  const byDate = dates.map((date) => ({
-    date,
-    matteo: state.dailyExpenses
-      .filter((expense) => expense.date === date && expense.person === 'Matteo')
-      .reduce((sum, expense) => sum + Number(expense.amount), 0),
-    serrine: state.dailyExpenses
-      .filter((expense) => expense.date === date && expense.person === 'Serrine')
-      .reduce((sum, expense) => sum + Number(expense.amount), 0)
-  }));
-
   return `
     <h3>Suivi quotidien Matteo / Serrine</h3>
     <div class="card">
@@ -1790,11 +2036,11 @@ function renderDailyBudget() {
         <div class="stat"><span>Total Serrine</span><b>${fmt(expenseTotal('Serrine'))}</b></div>
       </div>
       <div class="filters">
-        <select id="expenseDate">${dates.map((date) => `<option>${date}</option>`).join('')}</select>
-        <select id="expensePerson"><option>Matteo</option><option>Serrine</option></select>
-        <input id="expenseCategory" placeholder="Catégorie">
-        <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Montant €">
-        <input id="expenseNote" placeholder="Note">
+        <select id="expenseDate" aria-label="Date dépense">${dates.map((date) => `<option>${date}</option>`).join('')}</select>
+        <select id="expensePerson" aria-label="Personne"><option>Matteo</option><option>Serrine</option></select>
+        <input id="expenseCategory" placeholder="Catégorie" aria-label="Catégorie">
+        <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Montant €" aria-label="Montant">
+        <input id="expenseNote" placeholder="Note" aria-label="Note">
       </div>
       <div class="actions">
         <button onclick="addExpense()">Ajouter la dépense</button>
@@ -1802,120 +2048,207 @@ function renderDailyBudget() {
       </div>
     </div>
     <div class="cards">
-      ${byDate.map((day) => `
+      ${state.dailyExpenses.map((expense) => `
         <article class="card">
-          <h3>${day.date}</h3>
-          ${badges(['Matteo ' + fmt(day.matteo), 'Serrine ' + fmt(day.serrine), 'Jour ' + fmt(day.matteo + day.serrine)])}
-          ${state.dailyExpenses
-            .filter((expense) => expense.date === day.date)
-            .map((expense) => `
-              <p>
-                <b>${expense.person}</b> · ${fmt(expense.amount)} · ${expense.category}${expense.note ? ' — ' + expense.note : ''}
-                <button class="ghost" onclick="deleteExpense('${expense.id}')">Supprimer</button>
-              </p>
-            `)
-            .join('') || '<p class="muted">Aucune dépense saisie.</p>'}
+          <div class="inline-form">
+            <label>Date <input id="exp-date-${esc(expense.id)}" value="${esc(expense.date)}"></label>
+            <label>Personne <select id="exp-person-${esc(expense.id)}"><option ${expense.person === 'Matteo' ? 'selected' : ''}>Matteo</option><option ${expense.person === 'Serrine' ? 'selected' : ''}>Serrine</option></select></label>
+            <label>Catégorie <input id="exp-cat-${esc(expense.id)}" value="${esc(expense.category)}"></label>
+            <label>Montant <input id="exp-amount-${esc(expense.id)}" type="number" step="0.01" value="${esc(expense.amount)}"></label>
+            <label>Note <input id="exp-note-${esc(expense.id)}" value="${esc(expense.note)}"></label>
+          </div>
+          <div class="actions"><button onclick="updateExpense('${esc(expense.id)}')">Modifier</button><button class="ghost" onclick="deleteExpense('${esc(expense.id)}')">Supprimer</button></div>
         </article>
-      `).join('')}
+      `).join('') || '<p class="muted">Aucune dépense saisie.</p>'}
     </div>
   `;
+}
+
+// Rendu des activités
+function renderAddControls(type, id) {
+  const prefix = type + '-' + id + '-';
+  return `
+    <div class="inline-form">
+      <select id="${esc(prefix)}Date" aria-label="Date programme">${tripDates().map((date) => `<option ${date === selectedDate ? 'selected' : ''}>${date}</option>`).join('')}</select>
+      <select id="${esc(prefix)}Slot" aria-label="Créneau programme">${SLOTS.map(([key, label]) => `<option value="${key}">${label}</option>`).join('')}</select>
+      <input id="${esc(prefix)}Time" placeholder="Heure facultative" aria-label="Heure facultative">
+      <input id="${esc(prefix)}Note" placeholder="Note facultative" aria-label="Note facultative">
+      <button onclick="addToSchedule('${esc(type)}','${esc(id)}','${esc(prefix)}')">Ajouter au programme</button>
+    </div>
+  `;
+}
+
+function renderActivities() {
+  const zone = $('#actZone')?.value || '';
+  const displayArea = $('#actDisplayArea')?.value || '';
+  const activities = APP_SEED_DATA.activities.filter((activity) => {
+    const geo = resolveGeographicArea(activity, 'activity');
+    return (!$('#actArea') || !$('#actArea').value || activity.area === $('#actArea').value) &&
+      (!$('#actStatus').value || activity.status === $('#actStatus').value) &&
+      (!$('#actPriority').value || activity.priority === $('#actPriority').value) &&
+      (!$('#actDecision').value || activity.commonDecision === $('#actDecision').value) &&
+      (!$('#actResa').value || activity.reservation === $('#actResa').value) &&
+      (!zone || geo.zone === zone) &&
+      (!displayArea || geo.displayArea === displayArea);
+  });
+  $('#actList').innerHTML = activities.map((activity) => {
+    const geo = resolveGeographicArea(activity, 'activity');
+    return `
+      <article class="card">
+        <h3>${esc(activity.name)}</h3>
+        ${badges([geo.zone, geo.displayArea, activity.area, activity.status, activity.priority, activity.priceWarning ? 'Tarif à confirmer' : ''])}
+        <p>${esc(activity.description || '')}</p>
+        <p><b>Prix :</b> ${fmt(activity.priceEur)}<br><b>Matteo :</b> ${esc(activity.matteoOpinion)}<br><b>Conjointe :</b> ${esc(activity.partnerOpinion)}<br><b>Notes :</b> ${esc(activity.notes || '—')}</p>
+        ${renderAddControls('activity', activity.id)}
+        ${correctionForm('activity', activity)}
+        <button class="ghost" onclick="toggleDone('${esc(activity.id)}')">${state.doneActivities.includes(activity.id) ? 'Terminée' : 'Marquer terminée'}</button>
+      </article>
+    `;
+  }).join('');
+  $('#actCount').textContent = activities.length;
+}
+
+function toggleDone(id) {
+  state.doneActivities = state.doneActivities.includes(id) ? state.doneActivities.filter((item) => item !== id) : [...state.doneActivities, id];
+  save();
+  renderActivities();
+}
+
+// Rendu des restaurants
+function renderRestaurants() {
+  const minRating = Number($('#restMin').value || 0);
+  const favoriteFilter = $('#restFav').value;
+  const zone = $('#restZone')?.value || '';
+  const displayArea = $('#restDisplayArea')?.value || '';
+  const maxPrice = $('#restPrice').value ? Number($('#restPrice').value) : null;
+  const restaurants = APP_SEED_DATA.restaurants.filter((restaurant) => {
+    const geo = resolveGeographicArea(restaurant, 'restaurant');
+    const hasPrice = restaurant.estimatedPriceJpy != null;
+    return (!$('#restCat').value || (restaurant.categories || [restaurant.category]).includes($('#restCat').value)) &&
+      (!$('#restArea').value || restaurant.area === $('#restArea').value) &&
+      (!minRating || restaurant.rating >= minRating) &&
+      (!favoriteFilter || (favoriteFilter === 'favoris' ? state.favorites.includes(restaurant.id) : state.visited.includes(restaurant.id))) &&
+      (maxPrice == null || (hasPrice && Number(restaurant.estimatedPriceJpy) <= maxPrice)) &&
+      (!zone || geo.zone === zone) &&
+      (!displayArea || geo.displayArea === displayArea);
+  });
+  $('#restCount').textContent = restaurants.length;
+  $('#restList').innerHTML = restaurants.map((restaurant) => {
+    const geo = resolveGeographicArea(restaurant, 'restaurant');
+    return `
+      <article class="restaurant">
+        <h3>${esc(restaurant.nameJa)}</h3>
+        <p class="muted">${esc(restaurant.nameRomaji)}</p>
+        ${badges([...(restaurant.categories || [restaurant.category]), geo.zone, geo.displayArea, geo.nearestStation, '★ ' + (restaurant.rating ?? '—') + ' (' + (restaurant.reviewCount ?? '—') + ')'])}
+        <p><b>Prix :</b> midi ${esc(restaurant.lunchPrice || '—')} · soir ${esc(restaurant.dinnerPrice || '—')} · estimé ${jpy(restaurant.estimatedPriceJpy)}</p>
+        <p><b>Spécialité :</b> ${esc(restaurant.specialty || '—')}<br>${esc(restaurant.description || '')}</p>
+        <div class="actions">
+          <button class="fav ${state.favorites.includes(restaurant.id) ? 'on' : ''}" onclick="tog('favorites','${esc(restaurant.id)}')">♥ Favori</button>
+          <button class="ghost" onclick="tog('visited','${esc(restaurant.id)}')">${state.visited.includes(restaurant.id) ? 'Visité' : 'À visiter'}</button>
+          <a class="link" href="${esc(restaurant.tabelogUrl || '#')}" target="_blank">Tabelog</a>
+          ${restaurant.reservationUrl ? `<a class="link" href="${esc(restaurant.reservationUrl)}" target="_blank">Réserver</a>` : ''}
+        </div>
+        <textarea placeholder="Note personnelle" oninput="state.notes['${esc(restaurant.id)}']=this.value;save()">${esc(state.notes[restaurant.id] || '')}</textarea>
+        ${renderAddControls('restaurant', restaurant.id)}
+        ${correctionForm('restaurant', restaurant)}
+      </article>
+    `;
+  }).join('');
+}
+
+function tog(key, id) {
+  state[key] = state[key].includes(id) ? state[key].filter((item) => item !== id) : [...state[key], id];
+  save();
+  renderRestaurants();
+}
+
+function renderHome() {
+  const summary = budgetSummary();
+  const next = nextScheduleEvent();
+  $('#home').innerHTML = `
+    <div class="hero"><small>JAPON 2026</small><h2>Version Lite</h2><p>${APP_SEED_DATA.metadata.tripStart} → ${APP_SEED_DATA.metadata.tripEnd} · ${APP_SEED_DATA.metadata.days} jours</p></div>
+    <div class="grid">
+      <div class="card stat"><span>Budget global</span><b>${fmt(summary.globalBudget)}</b></div>
+      <div class="card stat"><span>Total dépensé</span><b>${fmt(summary.totalSpent)}</b></div>
+      <div class="card stat"><span>Reste disponible</span><b>${fmt(summary.remainingBudget)}</b></div>
+      <div class="card stat"><span>Activités</span><b>${APP_SEED_DATA.activities.length}</b></div>
+    </div>
+    ${renderBudgetProgress(summary)}
+    <h3>Alertes tarifs</h3>${badges(APP_SEED_DATA.metadata.dataWarnings.map((warning) => warning + ' · Tarif à confirmer'))}
+    <h3>Prochain événement</h3><div class="card">${next ? esc(next.date + ' · ' + SLOT_LABELS[next.slot] + ' · ' + sourceLabel(next.sourceType, next.sourceId, next.fallbackLabel)) : 'À compléter'}</div>
+    <h3>Prochaines tâches</h3><div class="cards">${APP_SEED_DATA.tasks.slice(0, 4).map(taskCard).join('')}</div>
+  `;
+}
+
+function taskCard(task) {
+  return `<article class="card">${badges([task.priority, task.owner, task.status])}<h3>${esc(task.title)}</h3><p>Échéance : ${esc(task.dueDate)}</p></article>`;
 }
 
 function renderMore() {
-  const metadata = APP_SEED_DATA.metadata;
-  const paid = metadata.totalPaid / metadata.budgetInitial * 100;
-
+  const summary = budgetSummary();
   $('#more').innerHTML = `
     <h2>Budget et tâches</h2>
     <div class="card">
-      <p>
-        Cagnotte initiale : <b>${fmt(metadata.budgetInitial)}</b><br>
-        Dépenses payées : <b>${fmt(metadata.totalPaid)}</b><br>
-        Reste disponible : <b>${fmt(metadata.budgetRemaining)}</b>
-      </p>
-      <div class="budgetbar"><i style="width:${paid}%"></i></div>
+      <div class="filters">
+        <label>Budget global du voyage <input id="globalBudget" type="number" step="0.01" value="${esc(summary.globalBudget)}"></label>
+        <label>Dépenses déjà payées avant le suivi <input id="alreadyPaid" type="number" step="0.01" value="${esc(summary.alreadyPaid)}"></label>
+      </div>
+      <button onclick="saveBudgetSettings()">Enregistrer le budget</button>
+      <p>Budget global : <b>${fmt(summary.globalBudget)}</b><br>Dépenses déjà payées : <b>${fmt(summary.alreadyPaid)}</b><br>Nouvelles dépenses : <b>${fmt(summary.trackedExpenses)}</b><br>Total dépensé : <b>${fmt(summary.totalSpent)}</b><br>Budget restant : <b>${fmt(summary.remainingBudget)}</b></p>
+      ${renderBudgetProgress(summary)}
     </div>
-    <h3>Dépenses</h3>
-    <div class="cards">
-      ${APP_SEED_DATA.budget.map((budget) => `
-        <article class="card">
-          <h3>${budget.label}</h3>
-          ${badges(['Réservation ' + budget.reserved])}
-          <p>Payé : ${fmt(budget.paid)} · Reste après paiement : ${fmt(budget.remainingAfter)}</p>
-        </article>
-      `).join('')}
-    </div>
+    <h3>Dépenses initiales informatives</h3>
+    <div class="cards">${APP_SEED_DATA.budget.map((budget) => `<article class="card"><h3>${esc(budget.label)}</h3>${badges(['Réservation ' + budget.reserved])}<p>Payé : ${fmt(budget.paid)} · Reste après paiement : ${fmt(budget.remainingAfter)}</p></article>`).join('')}</div>
     ${renderDailyBudget()}
-    <h3>Tâches</h3>
-    <div class="cards">${APP_SEED_DATA.tasks.map(taskCard).join('')}</div>
-    <div class="actions">
-      <button class="ghost" onclick="copyHtmlFile()">Copier le fichier index.html</button>
-      <button class="ghost" onclick="showHtmlSourceBox()">Afficher le fichier à copier-coller</button>
-    </div>
+    <h3>Tâches</h3><div class="cards">${APP_SEED_DATA.tasks.map(taskCard).join('')}</div>
+    <div class="actions"><button class="ghost" onclick="copyHtmlFile()">Copier le fichier index.html</button><button class="ghost" onclick="showHtmlSourceBox()">Afficher le fichier à copier-coller</button></div>
     <textarea id="copySourceBox" class="hidden" rows="14" aria-label="Code complet de index.html à copier-coller"></textarea>
     <button id="reset" class="reset">Réinitialiser mes données locales</button>
   `;
+  $('#reset').onclick = () => { if (confirm('Réinitialiser mes données locales ?')) { localStorage.removeItem('japanLiteLocal'); location.reload(); } };
 }
 
-document.body.innerHTML = `
-  <div class="app">
-    <header>
-      <small>日本 · voyage validé ergonomie</small>
-      <h1>Notre voyage au Japon</h1>
-      <p>Application Lite autonome, données intégrées.</p>
-    </header>
-    <main>
-      <section id="home" class="section"></section>
-      <section id="program" class="section"></section>
-      <section id="activities" class="section">
-        <h2>Activités <span id="actCount" class="count"></span></h2>
-        <div class="filters">
-          <select id="actArea"></select>
-          <select id="actStatus"></select>
-          <select id="actPriority"></select>
-          <select id="actDecision"></select>
-          <select id="actResa"></select>
-        </div>
-        <div id="actList" class="cards"></div>
-      </section>
-      <section id="restaurants" class="section">
-        <h2>Restaurants <span id="restCount" class="count"></span></h2>
-        <div class="filters">
-          <select id="restCat"></select>
-          <select id="restArea"></select>
-          <select id="restFav">
-            <option value="">Favori/visité</option>
-            <option value="favoris">Favoris</option>
-            <option value="visited">Visités</option>
-          </select>
-          <select id="restPrice">
-            <option value="">Prix max</option>
-            <option value="2000">≤ 2 000 ¥</option>
-            <option value="8000">≤ 8 000 ¥</option>
-            <option value="15000">≤ 15 000 ¥</option>
-            <option value="25000">≤ 25 000 ¥</option>
-          </select>
-          <input id="restMin" type="number" min="0" max="5" step="0.1" placeholder="Note min">
-        </div>
-        <div id="restList" class="cards"></div>
-      </section>
-      <section id="more" class="section"></section>
-    </main>
-    <nav>
-      ${[
-        ['home', 'Accueil'],
-        ['program', 'Programme'],
-        ['activities', 'Activités'],
-        ['restaurants', 'Restaurants'],
-        ['more', 'Plus']
-      ].map((item) => `
-        <button data-sec="${item[0]}" onclick="show('${item[0]}')">${item[1]}</button>
-      `).join('')}
-    </nav>
-  </div>
-`;
+function getCopyableHtml() { return '<!doctype html>\n' + HTML_SOURCE; }
+function copyHtmlFile() {
+  const text = getCopyableHtml();
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(() => alert('Fichier index.html copié.')).catch(() => fallbackCopy(text));
+  fallbackCopy(text);
+}
+function showHtmlSourceBox() { const box = $('#copySourceBox'); box.classList.remove('hidden'); box.value = getCopyableHtml(); box.focus(); box.select(); }
+function fallbackCopy(text) { const area = document.createElement('textarea'); area.value = text; area.style.position = 'fixed'; area.style.opacity = '0'; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); alert('Fichier index.html copié.'); }
+
+function init() {
+  document.body.innerHTML = `
+    <div class="app">
+      <header><small>日本 · voyage validé ergonomie</small><h1>Notre voyage au Japon</h1><p>Application Lite autonome, données intégrées.</p></header>
+      <main>
+        <section id="home" class="section"></section>
+        <section id="program" class="section"></section>
+        <section id="activities" class="section"><h2>Activités <span id="actCount" class="count"></span></h2><div class="filters"><select id="actZone" onchange="refreshGeoAreaFilter('activity');renderActivities()"></select><select id="actDisplayArea" onchange="renderActivities()"></select><select id="actArea"></select><select id="actStatus"></select><select id="actPriority"></select><select id="actDecision"></select><select id="actResa"></select></div><div id="actList" class="cards"></div></section>
+        <section id="restaurants" class="section"><h2>Restaurants <span id="restCount" class="count"></span></h2><div class="filters"><select id="restZone" onchange="refreshGeoAreaFilter('restaurant');renderRestaurants()"></select><select id="restDisplayArea" onchange="renderRestaurants()"></select><select id="restCat"></select><select id="restArea"></select><select id="restFav"><option value="">Favori/visité</option><option value="favoris">Favoris</option><option value="visited">Visités</option></select><select id="restPrice"><option value="">Prix max</option><option value="2000">≤ 2 000 ¥</option><option value="8000">≤ 8 000 ¥</option><option value="15000">≤ 15 000 ¥</option><option value="25000">≤ 25 000 ¥</option></select><input id="restMin" type="number" min="0" max="5" step="0.1" placeholder="Note min"></div><div id="restList" class="cards"></div></section>
+        <section id="more" class="section"></section>
+      </main>
+      <nav>${[['home','Accueil'],['program','Programme'],['activities','Activités'],['restaurants','Restaurants'],['more','Plus']].map((item) => `<button data-sec="${item[0]}" onclick="show('${item[0]}')">${item[1]}</button>`).join('')}</nav>
+    </div>`;
+  renderHome();
+  renderProgram();
+  renderMore();
+  populateGeoFilters();
+  opt('actArea', APP_SEED_DATA.activities.map((activity) => activity.area), 'Quartier source');
+  opt('actStatus', APP_SEED_DATA.activities.map((activity) => activity.status), 'Statut');
+  opt('actPriority', APP_SEED_DATA.activities.map((activity) => activity.priority), 'Priorité');
+  opt('actDecision', APP_SEED_DATA.activities.map((activity) => activity.commonDecision), 'Décision');
+  opt('actResa', APP_SEED_DATA.activities.map((activity) => activity.reservation), 'Réservation');
+  opt('restCat', APP_SEED_DATA.restaurants.flatMap((restaurant) => restaurant.categories || [restaurant.category]), 'Catégorie');
+  opt('restArea', APP_SEED_DATA.restaurants.map((restaurant) => restaurant.area), 'Quartier source');
+  $$('.filters select,.filters input').forEach((input) => input.addEventListener('input', () => { renderActivities(); renderRestaurants(); }));
+  renderActivities();
+  renderRestaurants();
+  show(localStorage.getItem('japanLitePrefs') || 'home');
+}
 
 init();
+
   </script>
 </body>
 </html>
